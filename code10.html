@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Асимметричный плюс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff0000;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            position: relative;
+        }
+
+        .plus-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 3rem 0;
+        }
+
+        .asymmetric-plus {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .plus-vertical {
+            width: 20px;
+            height: 120px;
+            background: #ff0000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .plus-horizontal {
+            background: #ff0000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 20px;
+        }
+
+        .plus-left {
+            width: 60px;
+            transform: translate(-100%, -50%);
+        }
+
+        .plus-right {
+            width: 100px;
+            transform: translate(0%, -50%);
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0) 70%);
+            filter: blur(20px);
+            z-index: -1;
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        .content-section {
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid #333;
+            margin-top: auto;
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .plus-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .plus-vertical {
+                width: 15px;
+                height: 80px;
+            }
+            
+            .plus-horizontal {
+                height: 15px;
+            }
+            
+            .plus-left {
+                width: 40px;
+            }
+            
+            .plus-right {
+                width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">АСИММЕТРИЯ</div>
+        </header>
+
+        <main class="main-content">
+            <div class="plus-container">
+                <div class="glow-effect"></div>
+                <div class="asymmetric-plus">
+                    <div class="plus-vertical"></div>
+                    <div class="plus-horizontal plus-left"></div>
+                    <div class="plus-horizontal plus-right"></div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h1>ИННОВАЦИЯ В БАЛАНСЕ</h1>
+                <p>Современный дизайн, где каждый элемент имеет значение. Асимметрия создает динамику, а красный акцент привлекает внимание к самому важному.</p>
+                <a href="#" class="btn">Исследовать</a>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p class="footer-text">© 2024 Асимметричный дизайн. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>
