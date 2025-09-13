@@ -70,7 +70,7 @@
         .plus-vertical {
             position: absolute;
             top: 0;
-            left: 50%;
+            left: 40%; /* Смещено левее центра */
             transform: translateX(-50%);
             width: 12px;
             height: 100vh;
@@ -92,7 +92,7 @@
 
         .plus-left {
             left: 0;
-            width: 45%;
+            width: 40%; /* Соответствует положению вертикальной линии */
             background: linear-gradient(to right, 
                 rgba(255, 0, 0, 0.1) 0%, 
                 rgba(255, 0, 0, 0.8) 20%, 
@@ -102,7 +102,7 @@
 
         .plus-right {
             right: 0;
-            width: 55%;
+            width: 60%; /* Удлиненный правый луч */
             background: linear-gradient(to left, 
                 rgba(255, 0, 0, 0.1) 0%, 
                 rgba(255, 0, 0, 0.8) 20%, 
@@ -247,6 +247,18 @@
             
             nav ul {
                 gap: 1rem;
+            }
+            
+            .plus-vertical {
+                left: 35%; /* Еще больше смещение на мобильных */
+            }
+            
+            .plus-left {
+                width: 35%;
+            }
+            
+            .plus-right {
+                width: 65%;
             }
         }
     </style>
