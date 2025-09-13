@@ -70,7 +70,7 @@
         .plus-vertical {
             position: absolute;
             top: 0;
-            left: 40%; /* Смещено левее центра */
+            left: 40%;
             transform: translateX(-50%);
             width: 12px;
             height: 100vh;
@@ -92,7 +92,7 @@
 
         .plus-left {
             left: 0;
-            width: 40%; /* Соответствует положению вертикальной линии */
+            width: 40%;
             background: linear-gradient(to right, 
                 rgba(255, 0, 0, 0.1) 0%, 
                 rgba(255, 0, 0, 0.8) 20%, 
@@ -102,7 +102,7 @@
 
         .plus-right {
             right: 0;
-            width: 60%; /* Удлиненный правый луч */
+            width: 60%;
             background: linear-gradient(to left, 
                 rgba(255, 0, 0, 0.1) 0%, 
                 rgba(255, 0, 0, 0.8) 20%, 
@@ -232,6 +232,67 @@
             font-size: 0.9rem;
         }
 
+        /* Стили для второй страницы */
+        .second-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .second-page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .second-page-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .second-page h2 {
+            font-size: 3rem;
+            color: #ff0000;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .second-page p {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #ff0000;
+            border: 2px solid #ff0000;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ff0000;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -250,7 +311,7 @@
             }
             
             .plus-vertical {
-                left: 35%; /* Еще больше смещение на мобильных */
+                left: 35%;
             }
             
             .plus-left {
@@ -259,6 +320,14 @@
             
             .plus-right {
                 width: 65%;
+            }
+            
+            .second-page h2 {
+                font-size: 2rem;
+            }
+            
+            .second-page p {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -287,7 +356,7 @@
             <h1>АСИММЕТРИЧНЫЙ ДИЗАЙН</h1>
             <p class="subtitle">Современное решение с акцентом на красный цвет и динамичную композицию</p>
             <div class="buttons">
-                <a href="#" class="btn btn-primary">Начать сейчас</a>
+                <a href="#" class="btn btn-primary" id="start-btn">Начать сейчас</a>
                 <a href="#" class="btn btn-secondary">Узнать больше</a>
             </div>
         </section>
@@ -316,5 +385,42 @@
             <p class="footer-text">© 2023 Асимметричный красный плюс. Все права защищены.</p>
         </div>
     </footer>
+
+    <!-- Вторая страница -->
+    <div class="second-page" id="second-page">
+        <div class="second-page-content">
+            <h2>Важное сообщение</h2>
+            <p>Это не строительный уровень, это я целюсь твоей сучке в пизду</p>
+            <button class="back-btn" id="back-btn">Вернуться назад</button>
+        </div>
+    </div>
+
+    <script>
+        // Получаем элементы DOM
+        const startBtn = document.getElementById('start-btn');
+        const secondPage = document.getElementById('second-page');
+        const backBtn = document.getElementById('back-btn');
+
+        // Обработчик клика по кнопке "Начать сейчас"
+        startBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            secondPage.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Блокируем прокрутку основной страницы
+        });
+
+        // Обработчик клика по кнопке "Вернуться назад"
+        backBtn.addEventListener('click', function() {
+            secondPage.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+        });
+
+        // Закрытие второй страницы при клике вне контента
+        secondPage.addEventListener('click', function(e) {
+            if (e.target === secondPage) {
+                secondPage.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
 </body>
 </html>
