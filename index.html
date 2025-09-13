@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Асимметричный плюс</title>
+    <title>Асимметричный красный плюс</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
     <style>
         * {
             margin: 0;
@@ -12,12 +13,10 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            background: #000000;
-            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
         }
 
@@ -25,117 +24,130 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
-            flex: 1;
         }
 
         header {
-            padding: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
             border-bottom: 1px solid #333;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #ff0000;
         }
 
-        .main-content {
+        nav ul {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 70vh;
-            position: relative;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff0000;
         }
 
         .plus-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 3rem 0;
-        }
-
-        .asymmetric-plus {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
         }
 
         .plus-vertical {
-            width: 20px;
-            height: 120px;
-            background: #ff0000;
             position: absolute;
-            top: 50%;
+            top: 0;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
+            width: 12px;
+            height: 100vh;
+            background: linear-gradient(to bottom, 
+                rgba(255, 0, 0, 0.1) 0%, 
+                rgba(255, 0, 0, 0.8) 20%, 
+                #ff0000 40%, 
+                #ff0000 60%, 
+                rgba(255, 0, 0, 0.8) 80%, 
+                rgba(255, 0, 0, 0.1) 100%);
         }
 
         .plus-horizontal {
-            background: #ff0000;
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            height: 20px;
+            height: 12px;
+            background: #ff0000;
         }
 
         .plus-left {
-            width: 60px;
-            transform: translate(-100%, -50%);
+            left: 0;
+            width: 45%;
+            background: linear-gradient(to right, 
+                rgba(255, 0, 0, 0.1) 0%, 
+                rgba(255, 0, 0, 0.8) 20%, 
+                #ff0000 60%, 
+                #ff0000 100%);
         }
 
         .plus-right {
-            width: 100px;
-            transform: translate(0%, -50%);
+            right: 0;
+            width: 55%;
+            background: linear-gradient(to left, 
+                rgba(255, 0, 0, 0.1) 0%, 
+                rgba(255, 0, 0, 0.8) 20%, 
+                #ff0000 60%, 
+                #ff0000 100%);
         }
 
-        .glow-effect {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0) 70%);
-            filter: blur(20px);
-            z-index: -1;
-            animation: pulse 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.7; }
-        }
-
-        .content-section {
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
             text-align: center;
-            max-width: 600px;
-            margin: 2rem auto;
+            position: relative;
+            z-index: 2;
         }
 
         h1 {
-            font-size: 3rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            color: #ffffff;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #cccccc;
-            margin-bottom: 2rem;
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ccc;
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .btn {
-            background: #ff0000;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -143,17 +155,76 @@
             display: inline-block;
         }
 
-        .btn:hover {
-            background: #cc0000;
-            transform: translateY(-2px);
+        .btn-primary {
+            background: #ff0000;
+            color: white;
+            border: 2px solid #ff0000;
             box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #ff0000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 6rem 0;
+        }
+
+        .feature-card {
+            background: rgba(30, 30, 30, 0.7);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid #333;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #ff0000;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-desc {
+            color: #aaa;
+            line-height: 1.6;
         }
 
         footer {
             text-align: center;
-            padding: 2rem 0;
+            padding: 3rem 0;
+            margin-top: 5rem;
             border-top: 1px solid #333;
-            margin-top: auto;
         }
 
         .footer-text {
@@ -163,29 +234,19 @@
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
-            .plus-container {
-                width: 200px;
-                height: 200px;
+            .subtitle {
+                font-size: 1.2rem;
             }
             
-            .plus-vertical {
-                width: 15px;
-                height: 80px;
+            .buttons {
+                flex-direction: column;
             }
             
-            .plus-horizontal {
-                height: 15px;
-            }
-            
-            .plus-left {
-                width: 40px;
-            }
-            
-            .plus-right {
-                width: 70px;
+            nav ul {
+                gap: 1rem;
             }
         }
     </style>
@@ -193,32 +254,55 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">АСИММЕТРИЯ</div>
+            <div class="logo">REDPLUS</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Услуги</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </nav>
         </header>
 
-        <main class="main-content">
-            <div class="plus-container">
-                <div class="glow-effect"></div>
-                <div class="asymmetric-plus">
-                    <div class="plus-vertical"></div>
-                    <div class="plus-horizontal plus-left"></div>
-                    <div class="plus-horizontal plus-right"></div>
-                </div>
-            </div>
+        <div class="plus-container">
+            <div class="plus-vertical"></div>
+            <div class="plus-horizontal plus-left"></div>
+            <div class="plus-horizontal plus-right"></div>
+        </div>
 
-            <div class="content-section">
-                <h1>ИННОВАЦИЯ В БАЛАНСЕ</h1>
-                <p>Современный дизайн, где каждый элемент имеет значение. Асимметрия создает динамику, а красный акцент привлекает внимание к самому важному.</p>
-                <a href="#" class="btn">Исследовать</a>
+        <section class="hero">
+            <h1>АСИММЕТРИЧНЫЙ ДИЗАЙН</h1>
+            <p class="subtitle">Современное решение с акцентом на красный цвет и динамичную композицию</p>
+            <div class="buttons">
+                <a href="#" class="btn btn-primary">Начать сейчас</a>
+                <a href="#" class="btn btn-secondary">Узнать больше</a>
             </div>
-        </main>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">✧</div>
+                <h3 class="feature-title">Современный дизайн</h3>
+                <p class="feature-desc">Чистые линии, минимализм и акцент на асимметричности создают уникальный визуальный опыт.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">♢</div>
+                <h3 class="feature-title">Контраст цветов</h3>
+                <p class="feature-desc">Сочетание черного, белого и красного создает мощный визуальный impact и привлекает внимание.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✦</div>
+                <h3 class="feature-title">Адаптивность</h3>
+                <p class="feature-desc">Дизайн прекрасно выглядит на всех устройствах, от мобильных телефонов до широкоформатных мониторов.</p>
+            </div>
+        </section>
     </div>
 
     <footer>
         <div class="container">
-            <p class="footer-text">© 2024 Асимметричный дизайн. Все права защищены.</p>
+            <p class="footer-text">© 2023 Асимметричный красный плюс. Все права защищены.</p>
         </div>
     </footer>
 </body>
-
 </html>
