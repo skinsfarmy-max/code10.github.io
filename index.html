@@ -40,23 +40,6 @@
             color: #ff0000;
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #ff0000;
-        }
-
         .plus-container {
             position: fixed;
             top: 0;
@@ -182,44 +165,6 @@
             box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
         }
 
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 6rem 0;
-        }
-
-        .feature-card {
-            background: rgba(30, 30, 30, 0.7);
-            padding: 2.5rem;
-            border-radius: 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid #333;
-            transition: transform 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: #ff0000;
-        }
-
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #fff;
-        }
-
-        .feature-desc {
-            color: #aaa;
-            line-height: 1.6;
-        }
-
         footer {
             text-align: center;
             padding: 3rem 0;
@@ -293,6 +238,39 @@
             box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
         }
 
+        /* Кнопка управления звуком */
+        .sound-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 0, 0, 0.3);
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sound-btn:hover {
+            background: rgba(255, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        .sound-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .sound-btn.muted svg {
+            fill: #666;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -304,10 +282,6 @@
             
             .buttons {
                 flex-direction: column;
-            }
-            
-            nav ul {
-                gap: 1rem;
             }
             
             .plus-vertical {
@@ -336,14 +310,6 @@
     <div class="container">
         <header>
             <div class="logo">REDPLUS</div>
-            <nav>
-                <ul>
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">О нас</a></li>
-                    <li><a href="#">Услуги</a></li>
-                    <li><a href="#">Контакты</a></li>
-                </ul>
-            </nav>
         </header>
 
         <div class="plus-container">
@@ -356,35 +322,17 @@
             <h1>АСИММЕТРИЧНЫЙ ДИЗАЙН</h1>
             <p class="subtitle">Современное решение с акцентом на красный цвет и динамичную композицию</p>
             <div class="buttons">
-                <a href="#" class="btn btn-primary" id="start-btn">Начать сейчас</a>
-                <a href="#" class="btn btn-secondary">Узнать больше</a>
-            </div>
-        </section>
-
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-icon">✧</div>
-                <h3 class="feature-title">Современный дизайн</h3>
-                <p class="feature-desc">Чистые линии, минимализм и акцент на асимметричности создают уникальный визуальный опыт.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">♢</div>
-                <h3 class="feature-title">Контраст цветов</h3>
-                <p class="feature-desc">Сочетание черного, белого и красного создает мощный визуальный impact и привлекает внимание.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">✦</div>
-                <h3 class="feature-title">Адаптивность</h3>
-                <p class="feature-desc">Дизайн прекрасно выглядит на всех устройствах, от мобильных телефонов до широкоформатных мониторов.</p>
+                <a href="#" class="btn btn-primary" id="next-btn">Дальше</a>
             </div>
         </section>
     </div>
 
-    <footer>
-        <div class="container">
-            <p class="footer-text">© 2023 Асимметричный красный плюс. Все права защищены.</p>
-        </div>
-    </footer>
+    <!-- Кнопка управления звуком -->
+    <div class="sound-btn" id="sound-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M14.016 3.234Q16.125 3.234 17.625 4.734T19.125 8.484V15.516Q19.125 17.766 17.625 19.266T14.016 20.766H9.984Q7.734 20.766 6.234 19.266T4.734 15.516V8.484Q4.734 6.234 6.234 4.734T9.984 3.234H14.016Z"/>
+        </svg>
+    </div>
 
     <!-- Вторая страница -->
     <div class="second-page" id="second-page">
@@ -395,14 +343,25 @@
         </div>
     </div>
 
+    <!-- Аудио элемент -->
+    <audio id="background-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+
     <script>
         // Получаем элементы DOM
-        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
         const secondPage = document.getElementById('second-page');
         const backBtn = document.getElementById('back-btn');
+        const soundBtn = document.getElementById('sound-btn');
+        const backgroundMusic = document.getElementById('background-music');
+        
+        // Флаг состояния звука
+        let isMuted = false;
 
-        // Обработчик клика по кнопке "Начать сейчас"
-        startBtn.addEventListener('click', function(e) {
+        // Обработчик клика по кнопке "Дальше"
+        nextBtn.addEventListener('click', function(e) {
             e.preventDefault();
             secondPage.classList.add('active');
             document.body.style.overflow = 'hidden'; // Блокируем прокрутку основной страницы
@@ -419,6 +378,38 @@
             if (e.target === secondPage) {
                 secondPage.classList.remove('active');
                 document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Управление звуком
+        soundBtn.addEventListener('click', function() {
+            if (isMuted) {
+                // Включаем звук
+                backgroundMusic.play().catch(e => {
+                    console.log("Автовоспроизведение заблокировано. Пользователь должен взаимодействовать со страницей сначала.");
+                });
+                soundBtn.classList.remove('muted');
+            } else {
+                // Выключаем звук
+                backgroundMusic.pause();
+                soundBtn.classList.add('muted');
+            }
+            isMuted = !isMuted;
+        });
+
+        // Попытка автоматического воспроизведения при загрузке страницы
+        window.addEventListener('load', function() {
+            // Сначала ставим на паузу, затем пытаемся воспроизвести
+            backgroundMusic.pause();
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Автовоспроизведение было запрещено
+                    soundBtn.classList.add('muted');
+                    isMuted = true;
+                    console.log("Автовоспроизведение заблокировано. Пользователь должен взаимодействовать со страницей сначала.");
+                });
             }
         });
     </script>
