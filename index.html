@@ -125,6 +125,8 @@
             display: flex;
             gap: 1.5rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .btn {
@@ -165,6 +167,19 @@
             box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
         }
 
+        .btn-secret {
+            background: transparent;
+            color: #ff9900;
+            border: 2px solid #ff9900;
+        }
+
+        .btn-secret:hover {
+            background: #ff9900;
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 153, 0, 0.3);
+        }
+
         footer {
             text-align: center;
             padding: 3rem 0;
@@ -177,7 +192,7 @@
             font-size: 0.9rem;
         }
 
-        /* Стили для второй страницы */
+        /* Стили для страниц */
         .page {
             position: fixed;
             top: 0;
@@ -203,6 +218,10 @@
             text-align: center;
             max-width: 800px;
             padding: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            border: 1px solid #ff0000;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
         }
 
         .page h2 {
@@ -236,6 +255,76 @@
             color: white;
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+
+        /* Стили для модального окна с паролем */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .password-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .password-content {
+            background: #111;
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .password-content h3 {
+            color: #ff0000;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #000;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        .password-input:focus {
+            border-color: #ff0000;
+        }
+
+        .password-error {
+            color: #ff0000;
+            margin-bottom: 1.5rem;
+            min-height: 1.5rem;
+            font-weight: 600;
+        }
+
+        .password-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
         }
 
         /* Кнопка управления звуком */
@@ -323,6 +412,7 @@
             <p class="subtitle">вход только для далбоебов</p>
             <div class="buttons">
                 <a href="#" class="btn btn-primary" id="next-btn">Дальше</a>
+                <a href="#" class="btn btn-secret" id="secret-btn">Секретная страница</a>
             </div>
         </section>
     </div>
@@ -338,8 +428,8 @@
     <div class="page" id="second-page">
         <div class="page-content">
             <h2>факт...</h2>
-            <p>Это не строительный уровень, это я прицеливаюсь к жопе твоей сучки.</p>
-            <button class="back-btn" id="to-third-page-btn">ладно...</button>
+            <p>Это не строительный уровень, это я целюсь твоей сучке в пизду</p>
+            <button class="back-btn" id="to-third-page-btn">Вернуться назад</button>
         </div>
     </div>
 
@@ -352,6 +442,28 @@
         </div>
     </div>
 
+    <!-- Четвертая страница -->
+    <div class="page" id="fourth-page">
+        <div class="page-content">
+            <h2>Секретная страница</h2>
+            <p>Поздравляю! Вы ввели правильный пароль и получили доступ к секретной странице. Здесь вы можете разместить любой контент, который захотите.</p>
+            <button class="back-btn" id="to-main-from-fourth-btn">На главную</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно для ввода пароля -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-content">
+            <h3>Введите пароль</h3>
+            <input type="password" class="password-input" id="password-input" placeholder="Введите пароль">
+            <div class="password-error" id="password-error"></div>
+            <div class="password-buttons">
+                <button class="btn btn-primary" id="submit-password">Войти</button>
+                <button class="btn btn-secondary" id="cancel-password">Отмена</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Аудио элемент -->
     <audio id="background-music" loop>
         <source src="music.mp3" type="audio/mpeg">
@@ -361,10 +473,18 @@
     <script>
         // Получаем элементы DOM
         const nextBtn = document.getElementById('next-btn');
+        const secretBtn = document.getElementById('secret-btn');
         const secondPage = document.getElementById('second-page');
         const thirdPage = document.getElementById('third-page');
+        const fourthPage = document.getElementById('fourth-page');
         const toThirdPageBtn = document.getElementById('to-third-page-btn');
         const toMainBtn = document.getElementById('to-main-btn');
+        const toMainFromFourthBtn = document.getElementById('to-main-from-fourth-btn');
+        const passwordModal = document.getElementById('password-modal');
+        const passwordInput = document.getElementById('password-input');
+        const passwordError = document.getElementById('password-error');
+        const submitPassword = document.getElementById('submit-password');
+        const cancelPassword = document.getElementById('cancel-password');
         const soundBtn = document.getElementById('sound-btn');
         const backgroundMusic = document.getElementById('background-music');
         
@@ -375,7 +495,14 @@
         nextBtn.addEventListener('click', function(e) {
             e.preventDefault();
             secondPage.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Блокируем прокрутку основной страницы
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Обработчик клика по кнопке "Секретная страница"
+        secretBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            passwordModal.classList.add('active');
+            passwordInput.focus();
         });
 
         // Обработчик клика по кнопке "Вернуться назад" на второй странице
@@ -387,7 +514,42 @@
         // Обработчик клика по кнопке "На главную" на третьей странице
         toMainBtn.addEventListener('click', function() {
             thirdPage.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Восстанавливаем прокрутку
+            document.body.style.overflow = 'auto';
+        });
+
+        // Обработчик клика по кнопке "На главную" на четвертой странице
+        toMainFromFourthBtn.addEventListener('click', function() {
+            fourthPage.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Обработчик отправки пароля
+        submitPassword.addEventListener('click', function() {
+            if (passwordInput.value === '1080') {
+                passwordModal.classList.remove('active');
+                fourthPage.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                passwordInput.value = '';
+                passwordError.textContent = '';
+            } else {
+                passwordError.textContent = 'Неверный пароль! Попробуйте снова.';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+
+        // Обработчик отмены ввода пароля
+        cancelPassword.addEventListener('click', function() {
+            passwordModal.classList.remove('active');
+            passwordInput.value = '';
+            passwordError.textContent = '';
+        });
+
+        // Обработчик нажатия Enter в поле пароля
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitPassword.click();
+            }
         });
 
         // Закрытие страниц при клике вне контента
@@ -401,6 +563,13 @@
         thirdPage.addEventListener('click', function(e) {
             if (e.target === thirdPage) {
                 thirdPage.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        fourthPage.addEventListener('click', function(e) {
+            if (e.target === fourthPage) {
+                fourthPage.classList.remove('active');
                 document.body.style.overflow = 'auto';
             }
         });
@@ -439,4 +608,3 @@
     </script>
 </body>
 </html>
-
