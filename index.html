@@ -414,8 +414,6 @@
             margin-bottom: 2rem;
         }
 
-        /* НОВЫЕ СТИЛИ ДЛЯ ДОПОЛНИТЕЛЬНЫХ ФУНКЦИЙ */
-        
         /* Секретный код Konami Code */
         .konami-alert {
             position: fixed;
@@ -579,6 +577,137 @@
             display: none;
         }
 
+        /* НОВЫЕ ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ */
+        
+        /* Matrix Code Rain */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0.1;
+            display: none;
+        }
+        
+        /* Кнопка активации Matrix */
+        .matrix-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00ff00;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .matrix-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00ff00;
+        }
+        
+        /* Кнопка хаоса */
+        .chaos-btn {
+            position: fixed;
+            bottom: 140px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 165, 0, 0.2);
+            border: 2px solid #ffa500;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffa500;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .chaos-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ffa500;
+        }
+        
+        /* Кнопка неонового режима */
+        .neon-btn {
+            position: fixed;
+            bottom: 200px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 2px solid #ff00ff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff00ff;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .neon-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ff00ff;
+        }
+        
+        /* Эффект дрожания */
+        .shake-effect {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        /* Секретное сообщение */
+        .secret-message {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            font-size: 0.9rem;
+            z-index: 800;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Эффект взрыва */
+        .explosion {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
         /* Стили для мобильных устройств */
         @media (max-width: 768px) {
             h1 {
@@ -631,12 +760,21 @@
                 height: 150px;
             }
 
-            .rainbow-mode {
-                bottom: 80px;
-                right: 20px;
-                width: 40px;
-                height: 40px;
+            .rainbow-mode,
+            .matrix-btn,
+            .chaos-btn,
+            .neon-btn {
+                bottom: auto;
+                top: 70px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 0.8rem;
             }
+            
+            .matrix-btn { top: 110px; }
+            .chaos-btn { top: 150px; }
+            .neon-btn { top: 190px; }
         }
     </style>
 </head>
@@ -666,7 +804,12 @@
     <div class="pulse-cross"></div>
     <div class="scanner-effect" id="scanner"></div>
     <div class="rainbow-mode" id="rainbow-mode" title="Режим радуги">R</div>
+    <div class="matrix-btn" id="matrix-btn" title="Matrix режим">M</div>
+    <div class="chaos-btn" id="chaos-btn" title="Режим хаоса">C</div>
+    <div class="neon-btn" id="neon-btn" title="Неоновый режим">N</div>
     <div class="countdown" id="countdown">00:00</div>
+    <div class="secret-message" id="secret-message"></div>
+    <canvas id="matrix-canvas" class="matrix-rain"></canvas>
     
     <div class="emergency-exit" id="emergency-exit" title="Экстренный выход">!</div>
     
@@ -909,6 +1052,7 @@
                         
                         // Запускаем сканер
                         startScanner();
+                        showSecretMessage("Konami Code активирован! Ты настоящий геймер! 🎮");
                     }
                 } else {
                     konamiIndex = 0;
@@ -970,23 +1114,133 @@
                     document.body.style.backgroundSize = '400% 400%';
                     document.body.style.animation = 'rainbowBG 5s linear infinite';
                     startCountdown(30); // 30 секунд радуги
+                    showSecretMessage("Режим радуги активирован! 🌈");
                 } else {
                     document.body.style.background = '#000';
                     document.body.style.animation = 'none';
                     document.getElementById('countdown').style.display = 'none';
                 }
             });
+        }
+        
+        // Matrix Rain эффект
+        function initMatrixRain() {
+            const matrixBtn = document.getElementById('matrix-btn');
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            let matrixActive = false;
+            let matrixAnimation;
             
-            // Анимация для радужного фона
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes rainbowBG {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
+            // Устанавливаем размер canvas
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Символы для Matrix эффекта
+            const matrixChars = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            // Инициализируем капли
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            // Функция отрисовки Matrix
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#0F0';
+                ctx.font = `${fontSize}px monospace`;
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    drops[i]++;
                 }
-            `;
-            document.head.appendChild(style);
+            }
+            
+            matrixBtn.addEventListener('click', () => {
+                matrixActive = !matrixActive;
+                
+                if (matrixActive) {
+                    canvas.style.display = 'block';
+                    matrixAnimation = setInterval(drawMatrix, 35);
+                    showSecretMessage("Добро пожаловать в Матрицу... 🔋");
+                } else {
+                    canvas.style.display = 'none';
+                    clearInterval(matrixAnimation);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            });
+        }
+        
+        // Режим хаоса
+        function initChaosMode() {
+            const chaosBtn = document.getElementById('chaos-btn');
+            let chaosActive = false;
+            let chaosInterval;
+            
+            chaosBtn.addEventListener('click', () => {
+                chaosActive = !chaosActive;
+                
+                if (chaosActive) {
+                    document.body.classList.add('shake-effect');
+                    showSecretMessage("Режим хаоса активирован! 💥");
+                    
+                    chaosInterval = setInterval(() => {
+                        // Случайные изменения на странице
+                        document.body.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
+                        document.body.style.marginLeft = `${Math.random() * 10 - 5}px`;
+                    }, 100);
+                    
+                    // Автоматическое отключение через 10 секунд
+                    setTimeout(() => {
+                        chaosActive = false;
+                        clearInterval(chaosInterval);
+                        document.body.classList.remove('shake-effect');
+                        document.body.style.transform = '';
+                        document.body.style.marginLeft = '';
+                    }, 10000);
+                } else {
+                    clearInterval(chaosInterval);
+                    document.body.classList.remove('shake-effect');
+                    document.body.style.transform = '';
+                    document.body.style.marginLeft = '';
+                }
+            });
+        }
+        
+        // Неоновый режим
+        function initNeonMode() {
+            const neonBtn = document.getElementById('neon-btn');
+            let neonActive = false;
+            
+            neonBtn.addEventListener('click', () => {
+                neonActive = !neonActive;
+                
+                if (neonActive) {
+                    document.querySelectorAll('h1, h2, .btn, .logo').forEach(element => {
+                        element.style.textShadow = '0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff';
+                    });
+                    showSecretMessage("Неоновый режим включен! 🌟");
+                } else {
+                    document.querySelectorAll('h1, h2, .btn, .logo').forEach(element => {
+                        element.style.textShadow = '';
+                    });
+                }
+            });
         }
         
         // Таймер обратного отсчета
@@ -1012,34 +1266,36 @@
             }, 1000);
         }
         
-        // Случайные вспышки на сайте
-        function initRandomFlashes() {
-            setInterval(() => {
-                if (Math.random() > 0.8) { // 20% chance
-                    const flash = document.createElement('div');
-                    flash.style.position = 'fixed';
-                    flash.style.top = Math.random() * 100 + 'vh';
-                    flash.style.left = Math.random() * 100 + 'vw';
-                    flash.style.width = '100px';
-                    flash.style.height = '100px';
-                    flash.style.background = 'radial-gradient(circle, rgba(255,0,0,0.5) 0%, transparent 70%)';
-                    flash.style.zIndex = '9999';
-                    flash.style.pointerEvents = 'none';
-                    document.body.appendChild(flash);
-                    
-                    setTimeout(() => {
-                        flash.remove();
-                    }, 300);
-                }
+        // Показать секретное сообщение
+        function showSecretMessage(message) {
+            const messageElement = document.getElementById('secret-message');
+            messageElement.textContent = message;
+            messageElement.style.opacity = '1';
+            
+            setTimeout(() => {
+                messageElement.style.opacity = '0';
             }, 3000);
         }
+        
+        // Создаем анимацию для радужного фона
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbowBG {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        `;
+        document.head.appendChild(style);
         
         // Инициализация всех новых функций
         window.addEventListener('load', function() {
             initKonamiCode();
             initEmergencyExit();
             initRainbowMode();
-            initRandomFlashes();
+            initMatrixRain();
+            initChaosMode();
+            initNeonMode();
         });
     </script>
 </body>
