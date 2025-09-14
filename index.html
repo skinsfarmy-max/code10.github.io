@@ -672,6 +672,143 @@
             transform: scale(1.1);
             box-shadow: 0 0 15px #ff00ff;
         }
+
+        /* ЕЩЕ БОЛЬШЕ НОВЫХ КНОПОК И ФУНКЦИЙ */
+        
+        /* Кнопка 8-bit ретро режима */
+        .retro-btn {
+            position: fixed;
+            bottom: 260px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00ffff;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .retro-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00ffff;
+        }
+        
+        /* Кнопка зеркального режима */
+        .mirror-btn {
+            position: fixed;
+            bottom: 320px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .mirror-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ffffff;
+        }
+        
+        /* Кнопка инверсного режима */
+        .invert-btn {
+            position: fixed;
+            bottom: 380px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(128, 0, 128, 0.2);
+            border: 2px solid #800080;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #800080;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .invert-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #800080;
+        }
+        
+        /* Кнопка режима диско */
+        .disco-btn {
+            position: fixed;
+            bottom: 440px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffd700;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .disco-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ffd700;
+        }
+        
+        /* Кнопка космического режима */
+        .space-btn {
+            position: fixed;
+            bottom: 500px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(75, 0, 130, 0.2);
+            border: 2px solid #4b0082;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4b0082;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .space-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #4b0082;
+        }
         
         /* Эффект дрожания */
         .shake-effect {
@@ -706,6 +843,37 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
+        }
+        
+        /* Эффект пикселизации */
+        .pixelate {
+            filter: url(#pixelate);
+        }
+        
+        /* Анимация тиккера */
+        .ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #ff0000;
+            color: #000;
+            padding: 5px 0;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            z-index: 1001;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .ticker-content {
+            white-space: nowrap;
+            animation: ticker-scroll 20s linear infinite;
+        }
+        
+        @keyframes ticker-scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
         
         /* Стили для мобильных устройств */
@@ -763,18 +931,28 @@
             .rainbow-mode,
             .matrix-btn,
             .chaos-btn,
-            .neon-btn {
+            .neon-btn,
+            .retro-btn,
+            .mirror-btn,
+            .invert-btn,
+            .disco-btn,
+            .space-btn {
                 bottom: auto;
-                top: 70px;
                 right: 10px;
                 width: 35px;
                 height: 35px;
                 font-size: 0.8rem;
             }
             
+            .rainbow-mode { top: 70px; }
             .matrix-btn { top: 110px; }
             .chaos-btn { top: 150px; }
             .neon-btn { top: 190px; }
+            .retro-btn { top: 230px; }
+            .mirror-btn { top: 270px; }
+            .invert-btn { top: 310px; }
+            .disco-btn { top: 350px; }
+            .space-btn { top: 390px; }
         }
     </style>
 </head>
@@ -803,10 +981,21 @@
     <!-- Новые элементы -->
     <div class="pulse-cross"></div>
     <div class="scanner-effect" id="scanner"></div>
+    <div class="ticker" id="ticker">
+        <div class="ticker-content" id="ticker-content">🚀 ДОБРО ПОЖАЛОВАТЬ В САМЫЙ КРУТОЙ САЙТ ВО ВСЕЛЕННОЙ! 🚀 ВАС ЖДУТ НЕВЕРОЯТНЫЕ ПРИКЛЮЧЕНИЯ! 🚀</div>
+    </div>
+    
+    <!-- Панель с кнопками режимов -->
     <div class="rainbow-mode" id="rainbow-mode" title="Режим радуги">R</div>
     <div class="matrix-btn" id="matrix-btn" title="Matrix режим">M</div>
     <div class="chaos-btn" id="chaos-btn" title="Режим хаоса">C</div>
     <div class="neon-btn" id="neon-btn" title="Неоновый режим">N</div>
+    <div class="retro-btn" id="retro-btn" title="8-bit ретро режим">8</div>
+    <div class="mirror-btn" id="mirror-btn" title="Зеркальный режим">Z</div>
+    <div class="invert-btn" id="invert-btn" title="Инверсный режим">I</div>
+    <div class="disco-btn" id="disco-btn" title="Диско режим">D</div>
+    <div class="space-btn" id="space-btn" title="Космический режим">S</div>
+    
     <div class="countdown" id="countdown">00:00</div>
     <div class="secret-message" id="secret-message"></div>
     <canvas id="matrix-canvas" class="matrix-rain"></canvas>
@@ -818,6 +1007,17 @@
         <p>+30 к крутости! Вы настоящий хакер! 🚀</p>
         <button class="back-btn" id="close-konami">OK</button>
     </div>
+
+    <!-- SVG фильтры для эффектов -->
+    <svg width="0" height="0">
+        <filter id="pixelate">
+            <feFlood x="2" y="2" height="2" width="2"/>
+            <feComposite width="5" height="5"/>
+            <feTile result="a"/>
+            <feComposite in="SourceGraphic" in2="a" operator="in"/>
+            <feMorphology operator="dilate" radius="2"/>
+        </filter>
+    </svg>
 
     <!-- Кнопка управления звуком -->
     <div class="sound-btn" id="sound-btn">
@@ -858,7 +1058,7 @@
         </div>
     </div>
 
-    <!-- Пятая страница (для секретной кнопки) -->
+    <!-- Пятая страница (для секретной кнопка) -->
     <div class="page" id="fifth-page">
         <div class="page-content">
             <div class="hidden-content">
@@ -1053,6 +1253,7 @@
                         // Запускаем сканер
                         startScanner();
                         showSecretMessage("Konami Code активирован! Ты настоящий геймер! 🎮");
+                        activateTicker("🎉 KONAMI CODE АКТИВИРОВАН! ВЫ ПОЛУЧИЛИ СУПЕРСИЛЫ! 🎉");
                     }
                 } else {
                     konamiIndex = 0;
@@ -1243,6 +1444,162 @@
             });
         }
         
+        // 8-bit ретро режим
+        function initRetroMode() {
+            const retroBtn = document.getElementById('retro-btn');
+            let retroActive = false;
+            
+            retroBtn.addEventListener('click', () => {
+                retroActive = !retroActive;
+                
+                if (retroActive) {
+                    document.body.classList.add('pixelate');
+                    document.body.style.imageRendering = 'pixelated';
+                    showSecretMessage("Ретро 8-bit режим активирован! 🎮");
+                } else {
+                    document.body.classList.remove('pixelate');
+                    document.body.style.imageRendering = '';
+                }
+            });
+        }
+        
+        // Зеркальный режим
+        function initMirrorMode() {
+            const mirrorBtn = document.getElementById('mirror-btn');
+            let mirrorActive = false;
+            
+            mirrorBtn.addEventListener('click', () => {
+                mirrorActive = !mirrorActive;
+                
+                if (mirrorActive) {
+                    document.body.style.transform = 'scaleX(-1)';
+                    showSecretMessage("Зеркальный режим активирован! 🪞");
+                } else {
+                    document.body.style.transform = '';
+                }
+            });
+        }
+        
+        // Инверсный режим
+        function initInvertMode() {
+            const invertBtn = document.getElementById('invert-btn');
+            let invertActive = false;
+            
+            invertBtn.addEventListener('click', () => {
+                invertActive = !invertActive;
+                
+                if (invertActive) {
+                    document.body.style.filter = 'invert(1)';
+                    showSecretMessage("Инверсный режим активирован! 🔄");
+                } else {
+                    document.body.style.filter = '';
+                }
+            });
+        }
+        
+        // Диско режим
+        function initDiscoMode() {
+            const discoBtn = document.getElementById('disco-btn');
+            let discoActive = false;
+            let discoInterval;
+            
+            discoBtn.addEventListener('click', () => {
+                discoActive = !discoActive;
+                
+                if (discoActive) {
+                    showSecretMessage("Диско режим активирован! 💃");
+                    
+                    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                    let colorIndex = 0;
+                    
+                    discoInterval = setInterval(() => {
+                        document.body.style.background = colors[colorIndex];
+                        colorIndex = (colorIndex + 1) % colors.length;
+                    }, 200);
+                    
+                    // Автоматическое отключение через 15 секунд
+                    setTimeout(() => {
+                        discoActive = false;
+                        clearInterval(discoInterval);
+                        document.body.style.background = '#000';
+                    }, 15000);
+                } else {
+                    clearInterval(discoInterval);
+                    document.body.style.background = '#000';
+                }
+            });
+        }
+        
+        // Космический режим
+        function initSpaceMode() {
+            const spaceBtn = document.getElementById('space-btn');
+            let spaceActive = false;
+            
+            spaceBtn.addEventListener('click', () => {
+                spaceActive = !spaceActive;
+                
+                if (spaceActive) {
+                    document.body.style.background = 'radial-gradient(circle, #000000 0%, #1a1a2e 50%, #16213e 100%)';
+                    document.body.style.backgroundSize = '400% 400%';
+                    document.body.style.animation = 'spaceBG 10s ease infinite';
+                    showSecretMessage("Космический режим активирован! 🚀");
+                    
+                    // Создаем звезды
+                    createStars();
+                } else {
+                    document.body.style.background = '#000';
+                    document.body.style.animation = 'none';
+                    document.querySelectorAll('.star').forEach(star => star.remove());
+                }
+            });
+            
+            // Создание звезд для космического режима
+            function createStars() {
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.position = 'fixed';
+                    star.style.width = Math.random() * 3 + 'px';
+                    star.style.height = star.style.width;
+                    star.style.background = '#fff';
+                    star.style.borderRadius = '50%';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.opacity = Math.random();
+                    star.style.animation = `twinkle ${Math.random() * 3 + 1}s infinite alternate`;
+                    document.body.appendChild(star);
+                }
+                
+                // Добавляем анимацию мерцания
+                const starStyle = document.createElement('style');
+                starStyle.textContent = `
+                    @keyframes twinkle {
+                        0% { opacity: 0.3; }
+                        100% { opacity: 1; }
+                    }
+                    @keyframes spaceBG {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+                `;
+                document.head.appendChild(starStyle);
+            }
+        }
+        
+        // Активация бегущей строки
+        function activateTicker(message) {
+            const ticker = document.getElementById('ticker');
+            const tickerContent = document.getElementById('ticker-content');
+            
+            tickerContent.textContent = message;
+            ticker.style.display = 'block';
+            
+            setTimeout(() => {
+                ticker.style.display = 'none';
+            }, 10000);
+        }
+        
         // Таймер обратного отсчета
         function startCountdown(seconds) {
             const countdown = document.getElementById('countdown');
@@ -1296,6 +1653,16 @@
             initMatrixRain();
             initChaosMode();
             initNeonMode();
+            initRetroMode();
+            initMirrorMode();
+            initInvertMode();
+            initDiscoMode();
+            initSpaceMode();
+            
+            // Автозапуск бегущей строки при загрузке
+            setTimeout(() => {
+                activateTicker("🌟 ДОБРО ПОЖАЛОВАТЬ! ИССЛЕДУЙТЕ ВСЕ СЕКРЕТНЫЕ ФУНКЦИИ САЙТА! 🌟");
+            }, 2000);
         });
     </script>
 </body>
