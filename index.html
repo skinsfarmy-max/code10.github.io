@@ -809,6 +809,202 @@
             transform: scale(1.1);
             box-shadow: 0 0 15px #4b0082;
         }
+
+        /* НОВЫЕ УНИКАЛЬНЫЕ ФУНКЦИИ */
+        
+        /* Вирусная анимация */
+        .virus {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #ff0000;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            animation: virusPulse 1s infinite;
+            display: none;
+        }
+        
+        @keyframes virusPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        /* Голосовой ассистент */
+        .voice-assistant {
+            position: fixed;
+            bottom: 560px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff0000;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .voice-assistant:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ff0000;
+        }
+        
+        .voice-assistant.listening {
+            background: rgba(255, 0, 0, 0.5);
+            animation: pulse 1s infinite;
+        }
+        
+        /* 3D куб */
+        .cube-container {
+            position: fixed;
+            top: 50%;
+            left: 50px;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 100px;
+            perspective: 800px;
+            z-index: 999;
+        }
+        
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: cubeRotate 10s infinite linear;
+        }
+        
+        .cube-face {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 0, 0, 0.5);
+            border: 2px solid #ff0000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .front { transform: translateZ(50px); }
+        .back { transform: translateZ(-50px) rotateY(180deg); }
+        .right { transform: translateX(50px) rotateY(90deg); }
+        .left { transform: translateX(-50px) rotateY(-90deg); }
+        .top { transform: translateY(-50px) rotateX(90deg); }
+        .bottom { transform: translateY(50px) rotateX(-90deg); }
+        
+        @keyframes cubeRotate {
+            0% { transform: rotateX(0) rotateY(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        
+        /* Виртуальная клавиатура */
+        .piano {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #ff0000;
+            display: none;
+        }
+        
+        .piano-key {
+            width: 40px;
+            height: 120px;
+            background: white;
+            margin: 0 2px;
+            border-radius: 0 0 5px 5px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .piano-key.black {
+            width: 25px;
+            height: 80px;
+            background: black;
+            margin: 0 -12px;
+            z-index: 2;
+        }
+        
+        .piano-key:hover {
+            background: #ff0000;
+        }
+        
+        /* Чат-бот */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 300px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: #ff0000;
+            padding: 10px;
+            border-radius: 13px 13px 0 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #333;
+            border-radius: 20px;
+            background: #000;
+            color: white;
+        }
+        
+        /* Система достижений */
+        .achievement {
+            position: fixed;
+            top: 20px;
+            right: 70px;
+            background: rgba(255, 215, 0, 0.9);
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 25px;
+            z-index: 1000;
+            display: none;
+            animation: achievementSlide 0.5s ease;
+        }
+        
+        @keyframes achievementSlide {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(0); }
+        }
         
         /* Эффект дрожания */
         .shake-effect {
@@ -848,32 +1044,6 @@
         /* Эффект пикселизации */
         .pixelate {
             filter: url(#pixelate);
-        }
-        
-        /* Анимация тиккера */
-        .ticker {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: #ff0000;
-            color: #000;
-            padding: 5px 0;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            z-index: 1001;
-            overflow: hidden;
-            display: none;
-        }
-        
-        .ticker-content {
-            white-space: nowrap;
-            animation: ticker-scroll 20s linear infinite;
-        }
-        
-        @keyframes ticker-scroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
         }
         
         /* Стили для мобильных устройств */
@@ -936,7 +1106,8 @@
             .mirror-btn,
             .invert-btn,
             .disco-btn,
-            .space-btn {
+            .space-btn,
+            .voice-assistant {
                 bottom: auto;
                 right: 10px;
                 width: 35px;
@@ -953,6 +1124,31 @@
             .invert-btn { top: 310px; }
             .disco-btn { top: 350px; }
             .space-btn { top: 390px; }
+            .voice-assistant { top: 430px; }
+            
+            .cube-container {
+                left: 10px;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .cube-face {
+                width: 60px;
+                height: 60px;
+                font-size: 12px;
+            }
+            
+            .front { transform: translateZ(30px); }
+            .back { transform: translateZ(-30px) rotateY(180deg); }
+            .right { transform: translateX(30px) rotateY(90deg); }
+            .left { transform: translateX(-30px) rotateY(-90deg); }
+            .top { transform: translateY(-30px) rotateX(90deg); }
+            .bottom { transform: translateY(30px) rotateX(-90deg); }
+            
+            .chatbot {
+                width: 250px;
+                height: 300px;
+            }
         }
     </style>
 </head>
@@ -981,8 +1177,17 @@
     <!-- Новые элементы -->
     <div class="pulse-cross"></div>
     <div class="scanner-effect" id="scanner"></div>
-    <div class="ticker" id="ticker">
-        <div class="ticker-content" id="ticker-content">🚀 ДОБРО ПОЖАЛОВАТЬ В САМЫЙ КРУТОЙ САЙТ ВО ВСЕЛЕННОЙ! 🚀 ВАС ЖДУТ НЕВЕРОЯТНЫЕ ПРИКЛЮЧЕНИЯ! 🚀</div>
+    
+    <!-- 3D куб -->
+    <div class="cube-container">
+        <div class="cube">
+            <div class="cube-face front">1080</div>
+            <div class="cube-face back">CODE</div>
+            <div class="cube-face right">RED</div>
+            <div class="cube-face left">PLUS</div>
+            <div class="cube-face top">WEB</div>
+            <div class="cube-face bottom">FUN</div>
+        </div>
     </div>
     
     <!-- Панель с кнопками режимов -->
@@ -995,10 +1200,43 @@
     <div class="invert-btn" id="invert-btn" title="Инверсный режим">I</div>
     <div class="disco-btn" id="disco-btn" title="Диско режим">D</div>
     <div class="space-btn" id="space-btn" title="Космический режим">S</div>
+    <div class="voice-assistant" id="voice-btn" title="Голосовой ассистент">🎤</div>
     
     <div class="countdown" id="countdown">00:00</div>
     <div class="secret-message" id="secret-message"></div>
     <canvas id="matrix-canvas" class="matrix-rain"></canvas>
+    
+    <!-- Виртуальная клавиатура -->
+    <div class="piano" id="piano">
+        <div class="piano-key" data-note="C"></div>
+        <div class="piano-key black" data-note="C#"></div>
+        <div class="piano-key" data-note="D"></div>
+        <div class="piano-key black" data-note="D#"></div>
+        <div class="piano-key" data-note="E"></div>
+        <div class="piano-key" data-note="F"></div>
+        <div class="piano-key black" data-note="F#"></div>
+        <div class="piano-key" data-note="G"></div>
+        <div class="piano-key black" data-note="G#"></div>
+        <div class="piano-key" data-note="A"></div>
+        <div class="piano-key black" data-note="A#"></div>
+        <div class="piano-key" data-note="B"></div>
+    </div>
+    
+    <!-- Чат-бот -->
+    <div class="chatbot" id="chatbot">
+        <div class="chat-header">Чат-бот REDPLUS</div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot">Привет! Я чат-бот REDPLUS. Чем могу помочь?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Введите сообщение...">
+        </div>
+    </div>
+    
+    <!-- Система достижений -->
+    <div class="achievement" id="achievement">
+        <span id="achievement-text">Достижение получено!</span>
+    </div>
     
     <div class="emergency-exit" id="emergency-exit" title="Экстренный выход">!</div>
     
@@ -1058,7 +1296,7 @@
         </div>
     </div>
 
-    <!-- Пятая страница (для секретной кнопка) -->
+    <!-- Пятая страница (для секретной кнопки) -->
     <div class="page" id="fifth-page">
         <div class="page-content">
             <div class="hidden-content">
@@ -1088,6 +1326,15 @@
         <source src="music.mp3" type="audio/mpeg">
         Ваш браузер не поддерживает аудио элемент.
     </audio>
+
+    <!-- Аудио для пианино -->
+    <audio id="piano-C" src="https://static.thenounproject.com/png/215803-200.png" preload="auto"></audio>
+    <audio id="piano-D" src="https://static.thenounproject.com/png/215803-200.png" preload="auto"></audio>
+    <audio id="piano-E" src="https://static.thenounproject.com/png/215803-200.png" preload="auto"></audio>
+    <audio id="piano-F" src="https://static.thenounproject.com/png/215803-200.png" preload="auto"></audio>
+    <audio id="piano-G" src="https://static.thenounproject.com/png/215803-200.png" preload="auto"></audio>
+    <audio id="piano-A" src="https://static.thenounproject.com/png/215803-200.png" preload="auto"></audio>
+    <audio id="piano-B" src="https://static.thenounproject.com/png/215803-200.png" preload="auto"></audio>
 
     <script>
         // Все предыдущие функции остаются без изменений
@@ -1253,7 +1500,7 @@
                         // Запускаем сканер
                         startScanner();
                         showSecretMessage("Konami Code активирован! Ты настоящий геймер! 🎮");
-                        activateTicker("🎉 KONAMI CODE АКТИВИРОВАН! ВЫ ПОЛУЧИЛИ СУПЕРСИЛЫ! 🎉");
+                        unlockAchievement("Мастер кодов: Разблокирован Konami Code!");
                     }
                 } else {
                     konamiIndex = 0;
@@ -1316,6 +1563,7 @@
                     document.body.style.animation = 'rainbowBG 5s linear infinite';
                     startCountdown(30); // 30 секунд радуги
                     showSecretMessage("Режим радуги активирован! 🌈");
+                    unlockAchievement("Радужный воин: Активирован режим радуги!");
                 } else {
                     document.body.style.background = '#000';
                     document.body.style.animation = 'none';
@@ -1379,6 +1627,7 @@
                     canvas.style.display = 'block';
                     matrixAnimation = setInterval(drawMatrix, 35);
                     showSecretMessage("Добро пожаловать в Матрицу... 🔋");
+                    unlockAchievement("Избранный: Вошел в Матрицу!");
                 } else {
                     canvas.style.display = 'none';
                     clearInterval(matrixAnimation);
@@ -1399,6 +1648,7 @@
                 if (chaosActive) {
                     document.body.classList.add('shake-effect');
                     showSecretMessage("Режим хаоса активирован! 💥");
+                    unlockAchievement("Агент хаоса: Все перевернул с ног на голову!");
                     
                     chaosInterval = setInterval(() => {
                         // Случайные изменения на странице
@@ -1436,6 +1686,7 @@
                         element.style.textShadow = '0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff';
                     });
                     showSecretMessage("Неоновый режим включен! 🌟");
+                    unlockAchievement("Неоновый король: Ослепительный успех!");
                 } else {
                     document.querySelectorAll('h1, h2, .btn, .logo').forEach(element => {
                         element.style.textShadow = '';
@@ -1456,6 +1707,7 @@
                     document.body.classList.add('pixelate');
                     document.body.style.imageRendering = 'pixelated';
                     showSecretMessage("Ретро 8-bit режим активирован! 🎮");
+                    unlockAchievement("Ретро геймер: Вернулся в 80-е!");
                 } else {
                     document.body.classList.remove('pixelate');
                     document.body.style.imageRendering = '';
@@ -1474,6 +1726,7 @@
                 if (mirrorActive) {
                     document.body.style.transform = 'scaleX(-1)';
                     showSecretMessage("Зеркальный режим активирован! 🪞");
+                    unlockAchievement("Зеркальный мастер: Видит мир иначе!");
                 } else {
                     document.body.style.transform = '';
                 }
@@ -1491,6 +1744,7 @@
                 if (invertActive) {
                     document.body.style.filter = 'invert(1)';
                     showSecretMessage("Инверсный режим активирован! 🔄");
+                    unlockAchievement("Инвертор: Перевернул цвета!");
                 } else {
                     document.body.style.filter = '';
                 }
@@ -1508,6 +1762,7 @@
                 
                 if (discoActive) {
                     showSecretMessage("Диско режим активирован! 💃");
+                    unlockAchievement("Диско король: Танцы до утра!");
                     
                     const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
                     let colorIndex = 0;
@@ -1543,6 +1798,7 @@
                     document.body.style.backgroundSize = '400% 400%';
                     document.body.style.animation = 'spaceBG 10s ease infinite';
                     showSecretMessage("Космический режим активирован! 🚀");
+                    unlockAchievement("Космонавт: Покоритель звезд!");
                     
                     // Создаем звезды
                     createStars();
@@ -1587,17 +1843,172 @@
             }
         }
         
-        // Активация бегущей строки
-        function activateTicker(message) {
-            const ticker = document.getElementById('ticker');
-            const tickerContent = document.getElementById('ticker-content');
+        // Голосовой ассистент
+        function initVoiceAssistant() {
+            const voiceBtn = document.getElementById('voice-btn');
+            let recognition;
             
-            tickerContent.textContent = message;
-            ticker.style.display = 'block';
+            try {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.continuous = false;
+                recognition.lang = 'ru-RU';
+                
+                voiceBtn.addEventListener('click', () => {
+                    if (!recognition) {
+                        showSecretMessage("Голосовой ассистент не поддерживается");
+                        return;
+                    }
+                    
+                    try {
+                        recognition.start();
+                        voiceBtn.classList.add('listening');
+                        showSecretMessage("Слушаю... Говорите");
+                    } catch (error) {
+                        showSecretMessage("Ошибка доступа к микрофону");
+                    }
+                });
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    voiceBtn.classList.remove('listening');
+                    
+                    showSecretMessage(`Распознано: ${transcript}`);
+                    handleVoiceCommand(transcript);
+                };
+                
+                recognition.onerror = function() {
+                    voiceBtn.classList.remove('listening');
+                    showSecretMessage("Ошибка распознавания речи");
+                };
+                
+            } catch (error) {
+                voiceBtn.style.display = 'none';
+            }
+        }
+        
+        function handleVoiceCommand(command) {
+            if (command.includes('включи радугу')) {
+                document.getElementById('rainbow-mode').click();
+            } else if (command.includes('матрица')) {
+                document.getElementById('matrix-btn').click();
+            } else if (command.includes('хаос')) {
+                document.getElementById('chaos-btn').click();
+            } else if (command.includes('неон')) {
+                document.getElementById('neon-btn').click();
+            } else if (command.includes('ретро')) {
+                document.getElementById('retro-btn').click();
+            } else if (command.includes('зеркало')) {
+                document.getElementById('mirror-btn').click();
+            } else if (command.includes('инверт')) {
+                document.getElementById('invert-btn').click();
+            } else if (command.includes('диско')) {
+                document.getElementById('disco-btn').click();
+            } else if (command.includes('космос')) {
+                document.getElementById('space-btn').click();
+            } else if (command.includes('открой секрет')) {
+                document.getElementById('secret-btn').click();
+            } else {
+                showSecretMessage("Команда не распознана");
+            }
+        }
+        
+        // Виртуальное пианино
+        function initPiano() {
+            const pianoKeys = document.querySelectorAll('.piano-key');
+            
+            pianoKeys.forEach(key => {
+                key.addEventListener('click', () => {
+                    const note = key.getAttribute('data-note');
+                    playPianoNote(note);
+                });
+            });
+            
+            // Активация пианино по двойному клику
+            document.addEventListener('dblclick', (e) => {
+                if (e.target.closest('.piano')) return;
+                const piano = document.getElementById('piano');
+                piano.style.display = piano.style.display === 'flex' ? 'none' : 'flex';
+            });
+        }
+        
+        function playPianoNote(note) {
+            // В реальном проекте здесь были бы реальные звуки
+            showSecretMessage(`Играет нота: ${note}`);
+        }
+        
+        // Чат-бот
+        function initChatbot() {
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && chatInput.value.trim()) {
+                    const message = chatInput.value.trim();
+                    addMessage(message, 'user');
+                    chatInput.value = '';
+                    
+                    // Ответ бота
+                    setTimeout(() => {
+                        botResponse(message);
+                    }, 500);
+                }
+            });
+            
+            // Активация чата по тройному клику
+            let clickCount = 0;
+            document.addEventListener('click', () => {
+                clickCount++;
+                setTimeout(() => { clickCount = 0; }, 300);
+                
+                if (clickCount === 3) {
+                    const chatbot = document.getElementById('chatbot');
+                    chatbot.style.display = chatbot.style.display === 'flex' ? 'none' : 'flex';
+                    clickCount = 0;
+                }
+            });
+        }
+        
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.textContent = text;
+            document.getElementById('chat-messages').appendChild(messageDiv);
+            document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;
+        }
+        
+        function botResponse(userMessage) {
+            const responses = {
+                'привет': 'Привет! Как дела?',
+                'как дела': 'Отлично! Работаю на полную мощность!',
+                'что ты умеешь': 'Я могу активировать разные режимы сайта! Попробуй сказать "включи радугу" или "матрица"',
+                'спасибо': 'Пожалуйста! Всегда рад помочь!',
+                'пока': 'До свидания! Возвращайся скорее!'
+            };
+            
+            const lowerMessage = userMessage.toLowerCase();
+            let response = "Не совсем понял. Попробуй спросить что-то другое!";
+            
+            for (const [key, value] of Object.entries(responses)) {
+                if (lowerMessage.includes(key)) {
+                    response = value;
+                    break;
+                }
+            }
+            
+            addMessage(response, 'bot');
+        }
+        
+        // Система достижений
+        function unlockAchievement(text) {
+            const achievement = document.getElementById('achievement');
+            const achievementText = document.getElementById('achievement-text');
+            
+            achievementText.textContent = text;
+            achievement.style.display = 'block';
             
             setTimeout(() => {
-                ticker.style.display = 'none';
-            }, 10000);
+                achievement.style.display = 'none';
+            }, 3000);
         }
         
         // Таймер обратного отсчета
@@ -1658,10 +2069,13 @@
             initInvertMode();
             initDiscoMode();
             initSpaceMode();
+            initVoiceAssistant();
+            initPiano();
+            initChatbot();
             
-            // Автозапуск бегущей строки при загрузке
+            // Разблокируем первое достижение
             setTimeout(() => {
-                activateTicker("🌟 ДОБРО ПОЖАЛОВАТЬ! ИССЛЕДУЙТЕ ВСЕ СЕКРЕТНЫЕ ФУНКЦИИ САЙТА! 🌟");
+                unlockAchievement("Первые шаги: Добро пожаловать на сайт!");
             }, 2000);
         });
     </script>
