@@ -7,307 +7,1664 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
     <style>
         /* Все предыдущие стили остаются без изменений */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        /* Стили для AI художника */
-        .ai-artist {
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff0000;
+        }
+
+        .plus-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .plus-vertical {
+            position: absolute;
+            top: 0;
+            left: 40%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 100vh;
+            background: linear-gradient(to bottom, 
+                rgba(255, 0, 0, 0.1) 0%, 
+                rgba(255, 0, 0, 0.8) 20%, 
+                #ff0000 40%, 
+                #ff0000 60%, 
+                rgba(255, 0, 0, 0.8) 80%, 
+                rgba(255, 0, 0, 0.1) 100%);
+        }
+
+        .plus-horizontal {
+            position: absolute;
+            top: 50%;
+            height: 12px;
+            background: #ff0000;
+        }
+
+        .plus-left {
+            left: 0;
+            width: 40%;
+            background: linear-gradient(to right, 
+                rgba(255, 0, 0, 0.1) 0%, 
+                rgba(255, 0, 0, 0.8) 20%, 
+                #ff0000 60%, 
+                #ff0000 100%);
+        }
+
+        .plus-right {
+            right: 0;
+            width: 60%;
+            background: linear-gradient(to left, 
+                rgba(255, 0, 0, 0.1) 0%, 
+                rgba(255, 0, 0, 0.8) 20%, 
+                #ff0000 60%, 
+                #ff0000 100%);
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ccc;
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #ff0000;
+            color: white;
+            border: 2px solid #ff0000;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #ff0000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secret {
+            background: transparent;
+            color: #ff9900;
+            border: 2px solid #ff9900;
+        }
+
+        .btn-secret:hover {
+            background: #ff9900;
+            color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 153, 0, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 5rem;
+            border-top: 1px solid #333;
+        }
+
+        .footer-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Стили для страниц */
+        .page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .page-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            border: 1px solid #ff0000;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .page h2 {
+            font-size: 3rem;
+            color: #ff0000;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .page p {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #ff0000;
+            border: 2px solid #ff0000;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ff0000;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+
+        /* Стили для модального окна с паролем */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .password-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .password-content {
+            background: #111;
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .password-content h3 {
+            color: #ff0000;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #000;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        .password-input:focus {
+            border-color: #ff0000;
+        }
+
+        .password-error {
+            color: #ff0000;
+            margin-bottom: 1.5rem;
+            min-height: 1.5rem;
+            font-weight: 600;
+        }
+
+        .password-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Кнопка управления звуком */
+        .sound-btn {
             position: fixed;
             bottom: 20px;
-            left: 80px;
+            left: 20px;
             width: 50px;
             height: 50px;
-            background: rgba(148, 0, 211, 0.3);
-            border: 2px solid #9400d3;
+            background: rgba(255, 0, 0, 0.3);
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sound-btn:hover {
+            background: rgba(255, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        .sound-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .sound-btn.muted svg {
+            fill: #666;
+        }
+
+        /* Секретная кнопка */
+        .secret-image-btn {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .secret-image-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .secret-image-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Позиционирование секретной кнопки на второй странице */
+        #second-page .secret-image-btn {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        /* Пятая страница */
+        .hidden-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hidden-content h2 {
+            color: #ff9900;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .hidden-content p {
+            color: #fff;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* Секретный код Konami Code */
+        .konami-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #ff0000;
+            border-radius: 15px;
+            padding: 2rem;
+            z-index: 2000;
+            text-align: center;
+            display: none;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.7);
+        }
+        
+        .konami-alert h3 {
+            color: #ff0000;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .konami-alert p {
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Кнопка экстренного выхода */
+        .emergency-exit {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 900;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #ff0000;
+        }
+        
+        .emergency-exit:hover {
+            background: rgba(255, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+        
+        /* Анимированный фон для страниц */
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.9) 70%);
+            z-index: -1;
+        }
+
+        /* Новые элементы - Пульсирующий крест */
+        .pulse-cross {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .pulse-cross::before, .pulse-cross::after {
+            content: '';
+            position: absolute;
+            background: #ff0000;
+            border-radius: 10px;
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .pulse-cross::before {
+            width: 100%;
+            height: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .pulse-cross::after {
+            width: 20px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Сканер эффект */
+        .scanner-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+            z-index: 999;
+            animation: scan 4s linear infinite;
+            box-shadow: 0 0 20px #ff0000;
+            display: none;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+
+        /* Секретная кнопка радуги */
+        .rainbow-mode {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .rainbow-mode:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Таймер обратного отсчета */
+        .countdown {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 0, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid #ff0000;
+            z-index: 800;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #ff0000;
+            display: none;
+        }
+
+        /* НОВЫЕ ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ */
+        
+        /* Matrix Code Rain */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0.1;
+            display: none;
+        }
+        
+        /* Кнопка активации Matrix */
+        .matrix-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
             border-radius: 50%;
             cursor: pointer;
             z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #9400d3;
+            color: #00ff00;
             font-weight: bold;
             opacity: 0.7;
             transition: all 0.3s ease;
         }
         
-        .ai-artist:hover {
+        .matrix-btn:hover {
             opacity: 1;
             transform: scale(1.1);
-            box-shadow: 0 0 15px #9400d3;
+            box-shadow: 0 0 15px #00ff00;
         }
         
-        .ai-artist-modal {
+        /* Кнопка хаоса */
+        .chaos-btn {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
-            border: 3px solid #9400d3;
-            border-radius: 15px;
-            padding: 2rem;
-            z-index: 2000;
-            width: 90%;
-            max-width: 500px;
-            display: none;
-            box-shadow: 0 0 50px rgba(148, 0, 211, 0.7);
-        }
-        
-        .ai-artist-modal h3 {
-            color: #9400d3;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-        
-        .ai-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 1rem;
-            border: 2px solid #333;
-            border-radius: 8px;
-            background: #000;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: border 0.3s ease;
-        }
-        
-        .ai-input:focus {
-            border-color: #9400d3;
-        }
-        
-        .ai-generate-btn {
-            width: 100%;
-            padding: 12px;
-            background: #9400d3;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            bottom: 140px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 165, 0, 0.2);
+            border: 2px solid #ffa500;
+            border-radius: 50%;
             cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffa500;
+            font-weight: bold;
+            opacity: 0.7;
             transition: all 0.3s ease;
         }
         
-        .ai-generate-btn:hover {
-            background: #7a00b8;
-            transform: translateY(-2px);
+        .chaos-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ffa500;
         }
         
-        .ai-canvas {
+        /* Кнопка неонового режима */
+        .neon-btn {
+            position: fixed;
+            bottom: 200px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 2px solid #ff00ff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff00ff;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .neon-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        /* ЕЩЕ БОЛЬШЕ НОВЫХ КНОПОК И ФУНКЦИЙ */
+        
+        /* Кнопка 8-bit ретро режима */
+        .retro-btn {
+            position: fixed;
+            bottom: 260px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00ffff;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .retro-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00ffff;
+        }
+        
+        /* Кнопка зеркального режима */
+        .mirror-btn {
+            position: fixed;
+            bottom: 320px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .mirror-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ffffff;
+        }
+        
+        /* Кнопка инверсного режима */
+        .invert-btn {
+            position: fixed;
+            bottom: 380px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(128, 0, 128, 0.2);
+            border: 2px solid #800080;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #800080;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .invert-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #800080;
+        }
+        
+        /* Кнопка режима диско */
+        .disco-btn {
+            position: fixed;
+            bottom: 440px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffd700;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .disco-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ffd700;
+        }
+        
+        /* Кнопка космического режима */
+        .space-btn {
+            position: fixed;
+            bottom: 500px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(75, 0, 130, 0.2);
+            border: 2px solid #4b0082;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4b0082;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .space-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #4b0082;
+        }
+        
+        /* Эффект дрожания */
+        .shake-effect {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        /* Секретное сообщение */
+        .secret-message {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            font-size: 0.9rem;
+            z-index: 800;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Эффект взрыва */
+        .explosion {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        /* Эффект пикселизации */
+        .pixelate {
+            filter: url(#pixelate);
+        }
+        
+        /* Анимация тиккера */
+        .ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 200px;
-            background: #111;
-            border-radius: 8px;
-            margin: 1rem 0;
+            background: #ff0000;
+            color: #000;
+            padding: 5px 0;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            z-index: 1001;
+            overflow: hidden;
             display: none;
         }
         
-        .ai-loading {
-            text-align: center;
-            color: #9400d3;
-            display: none;
+        .ticker-content {
+            white-space: nowrap;
+            animation: ticker-scroll 20s linear infinite;
         }
         
-        .ai-result {
-            text-align: center;
-            margin-top: 1rem;
+        @keyframes ticker-scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
         
-        .ai-download {
-            display: inline-block;
-            padding: 8px 16px;
-            background: #9400d3;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 1rem;
-            display: none;
+        /* Стили для мобильных устройств */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .plus-vertical {
+                left: 35%;
+            }
+            
+            .plus-left {
+                width: 35%;
+            }
+            
+            .plus-right {
+                width: 65%;
+            }
+            
+            .page h2 {
+                font-size: 2rem;
+            }
+            
+            .page p {
+                font-size: 1.2rem;
+            }
+
+            .secret-image-btn {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .emergency-exit {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 0.8rem;
+            }
+
+            .pulse-cross {
+                width: 150px;
+                height: 150px;
+            }
+
+            .rainbow-mode,
+            .matrix-btn,
+            .chaos-btn,
+            .neon-btn,
+            .retro-btn,
+            .mirror-btn,
+            .invert-btn,
+            .disco-btn,
+            .space-btn {
+                bottom: auto;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 0.8rem;
+            }
+            
+            .rainbow-mode { top: 70px; }
+            .matrix-btn { top: 110px; }
+            .chaos-btn { top: 150px; }
+            .neon-btn { top: 190px; }
+            .retro-btn { top: 230px; }
+            .mirror-btn { top: 270px; }
+            .invert-btn { top: 310px; }
+            .disco-btn { top: 350px; }
+            .space-btn { top: 390px; }
         }
     </style>
 </head>
 <body>
-    <!-- Весь предыдущий HTML код остается без изменений -->
+    <div class="container">
+        <header>
+            <div class="logo">REDPLUS</div>
+        </header>
 
-    <!-- 3D куб -->
-    <div class="cube-container">
-        <div class="cube">
-            <div class="cube-face front">1080</div>
-            <div class="cube-face back">CODE</div>
-            <div class="cube-face right">RED</div>
-            <div class="cube-face left">PLUS</div>
-            <div class="cube-face top">WEB</div>
-            <div class="cube-face bottom">FUN</div>
+        <div class="plus-container">
+            <div class="plus-vertical"></div>
+            <div class="plus-horizontal plus-left"></div>
+            <div class="plus-horizontal plus-right"></div>
+        </div>
+
+        <section class="hero">
+            <h1>код10 пузо</h1>
+            <p class="subtitle">вход только для далбоебов</p>
+            <div class="buttons">
+                <a href="#" class="btn btn-primary" id="next-btn">Дальше</a>
+                <a href="#" class="btn btn-secret" id="secret-btn">Секретная страница</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Новые элементы -->
+    <div class="pulse-cross"></div>
+    <div class="scanner-effect" id="scanner"></div>
+    <div class="ticker" id="ticker">
+        <div class="ticker-content" id="ticker-content">🚀 ДОБРО ПОЖАЛОВАТЬ В САМЫЙ КРУТОЙ САЙТ ВО ВСЕЛЕННОЙ! 🚀 ВАС ЖДУТ НЕВЕРОЯТНЫЕ ПРИКЛЮЧЕНИЯ! 🚀</div>
+    </div>
+    
+    <!-- Панель с кнопками режимов -->
+    <div class="rainbow-mode" id="rainbow-mode" title="Режим радуги">R</div>
+    <div class="matrix-btn" id="matrix-btn" title="Matrix режим">M</div>
+    <div class="chaos-btn" id="chaos-btn" title="Режим хаоса">C</div>
+    <div class="neon-btn" id="neon-btn" title="Неоновый режим">N</div>
+    <div class="retro-btn" id="retro-btn" title="8-bit ретро режим">8</div>
+    <div class="mirror-btn" id="mirror-btn" title="Зеркальный режим">Z</div>
+    <div class="invert-btn" id="invert-btn" title="Инверсный режим">I</div>
+    <div class="disco-btn" id="disco-btn" title="Диско режим">D</div>
+    <div class="space-btn" id="space-btn" title="Космический режим">S</div>
+    
+    <div class="countdown" id="countdown">00:00</div>
+    <div class="secret-message" id="secret-message"></div>
+    <canvas id="matrix-canvas" class="matrix-rain"></canvas>
+    
+    <div class="emergency-exit" id="emergency-exit" title="Экстренный выход">!</div>
+    
+    <div class="konami-alert" id="konami-alert">
+        <h3>Konami Code Активирован!</h3>
+        <p>+30 к крутости! Вы настоящий хакер! 🚀</p>
+        <button class="back-btn" id="close-konami">OK</button>
+    </div>
+
+    <!-- SVG фильтры для эффектов -->
+    <svg width="0" height="0">
+        <filter id="pixelate">
+            <feFlood x="2" y="2" height="2" width="2"/>
+            <feComposite width="5" height="5"/>
+            <feTile result="a"/>
+            <feComposite in="SourceGraphic" in2="a" operator="in"/>
+            <feMorphology operator="dilate" radius="2"/>
+        </filter>
+    </svg>
+
+    <!-- Кнопка управления звуком -->
+    <div class="sound-btn" id="sound-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M14.016 3.234Q16.125 3.234 17.625 4.734T19.125 8.484V15.516Q19.125 17.766 17.625 19.266T14.016 20.766H9.984Q7.734 20.766 6.234 19.266T4.734 15.516V8.484Q4.734 6.234 6.234 4.734T9.984 3.234H14.016Z"/>
+        </svg>
+    </div>
+
+    <!-- Вторая страница -->
+    <div class="page" id="second-page">
+        <div class="page-content">
+            <!-- Секретная кнопка на второй странице -->
+            <button class="secret-image-btn" id="secret-image-btn">
+                <img src="image.jpg" alt="Секретная кнопка" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZmZmZiI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41yIDIgMTIgMnptMCAxOGMtNC40MiAwLTgtMy41OC04LThzMy41OC04IDgtOCA4IDMuNTggOCA4LTMuNTggOC04IDh6Ii8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iNSIvPjwvc3ZnPg=='">
+            </button>
+            
+            <h2>факт...</h2>
+            <p>Это не строительный уровень, это я целюсь твоей сучке в пизду</p>
+            <button class="back-btn" id="to-third-page-btn">Вернуться назад</button>
         </div>
     </div>
 
-    <!-- Кнопка AI художника -->
-    <div class="ai-artist" id="ai-artist-btn" title="AI художник">🎨</div>
-
-    <!-- Модальное окно AI художника -->
-    <div class="ai-artist-modal" id="ai-artist-modal">
-        <h3>AI Художник</h3>
-        <input type="text" class="ai-input" id="ai-prompt" placeholder="Опишите что нарисовать..." maxlength="100">
-        <button class="ai-generate-btn" id="ai-generate">Создать изображение</button>
-        
-        <div class="ai-loading" id="ai-loading">
-            <div>Генерирую ваш шедевр... ✨</div>
-        </div>
-        
-        <canvas class="ai-canvas" id="ai-canvas"></canvas>
-        
-        <div class="ai-result">
-            <a href="#" class="ai-download" id="ai-download" download="ai-artwork.png">Скачать изображение</a>
+    <!-- Третья страница -->
+    <div class="page" id="third-page">
+        <div class="page-content">
+            <h2>Третья страница</h2>
+            <p>Здесь будет ваш текст, который вы сможете изменить позже прямо в коде.</p>
+            <button class="back-btn" id="to-main-btn">На главную</button>
         </div>
     </div>
 
-    <!-- Система достижений -->
-    <div class="achievement" id="achievement">
-        <span id="achievement-text">Достижение получено!</span>
+    <!-- Четвертая страница -->
+    <div class="page" id="fourth-page">
+        <div class="page-content">
+            <h2>Секретная страница</h2>
+            <p>Поздравляю! Вы ввели правильный пароль и получили доступ к секретной странице. Здесь вы можете разместить любой контент, который захотите.</p>
+            <button class="back-btn" id="to-main-from-fourth-btn">На главную</button>
+        </div>
     </div>
+
+    <!-- Пятая страница (для секретной кнопка) -->
+    <div class="page" id="fifth-page">
+        <div class="page-content">
+            <div class="hidden-content">
+                <h2>Секрет обнаружен!</h2>
+                <p>Вы нашли скрытую кнопку! Это пятая страница с дополнительным контентом.</p>
+                <p>Здесь вы можете разместить любую информацию, которую хотите скрыть от большинства пользователей.</p>
+                <button class="back-btn" id="to-main-from-fifth-btn">На главную</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для ввода пароля -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-content">
+            <h3>Введите пароль</h3>
+            <input type="password" class="password-input" id="password-input" placeholder="Введите пароль">
+            <div class="password-error" id="password-error"></div>
+            <div class="password-buttons">
+                <button class="btn btn-primary" id="submit-password">Войти</button>
+                <button class="btn btn-secondary" id="cancel-password">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Аудио элемент -->
+    <audio id="background-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
 
     <script>
-        // Весь предыдущий JavaScript код остается без изменений
+        // Все предыдущие функции остаются без изменений
+        // Получаем элементы DOM
+        const nextBtn = document.getElementById('next-btn');
+        const secretBtn = document.getElementById('secret-btn');
+        const secretImageBtn = document.getElementById('secret-image-btn');
+        const secondPage = document.getElementById('second-page');
+        const thirdPage = document.getElementById('third-page');
+        const fourthPage = document.getElementById('fourth-page');
+        const fifthPage = document.getElementById('fifth-page');
+        const toThirdPageBtn = document.getElementById('to-third-page-btn');
+        const toMainBtn = document.getElementById('to-main-btn');
+        const toMainFromFourthBtn = document.getElementById('to-main-from-fourth-btn');
+        const toMainFromFifthBtn = document.getElementById('to-main-from-fifth-btn');
+        const passwordModal = document.getElementById('password-modal');
+        const passwordInput = document.getElementById('password-input');
+        const passwordError = document.getElementById('password-error');
+        const submitPassword = document.getElementById('submit-password');
+        const cancelPassword = document.getElementById('cancel-password');
+        const soundBtn = document.getElementById('sound-btn');
+        const backgroundMusic = document.getElementById('background-music');
+        
+        // Флаг состояния звука
+        let isMuted = false;
 
-        // AI художник
-        function initAIArtist() {
-            const aiBtn = document.getElementById('ai-artist-btn');
-            const aiModal = document.getElementById('ai-artist-modal');
-            const aiGenerate = document.getElementById('ai-generate');
-            const aiPrompt = document.getElementById('ai-prompt');
-            const aiCanvas = document.getElementById('ai-canvas');
-            const aiLoading = document.getElementById('ai-loading');
-            const aiDownload = document.getElementById('ai-download');
-            const ctx = aiCanvas.getContext('2d');
+        // Обработчик клика по кнопке "Дальше"
+        nextBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            secondPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
 
-            // Установка размера canvas
-            aiCanvas.width = 400;
-            aiCanvas.height = 300;
+        // Обработчик клика по кнопке "Секретная страница"
+        secretBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            passwordModal.classList.add('active');
+            passwordInput.focus();
+        });
 
-            aiBtn.addEventListener('click', () => {
-                aiModal.style.display = 'block';
-            });
+        // Обработчик клика по секретной кнопке с изображением
+        secretImageBtn.addEventListener('click', function() {
+            fifthPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
 
-            // Закрытие модального окна при клике вне его
-            aiModal.addEventListener('click', (e) => {
-                if (e.target === aiModal) {
-                    aiModal.style.display = 'none';
-                }
-            });
+        // Обработчик клика по кнопке "Вернуться назад" на второй странице
+        toThirdPageBtn.addEventListener('click', function() {
+            secondPage.classList.remove('active');
+            thirdPage.classList.add('active');
+        });
 
-            aiGenerate.addEventListener('click', generateArt);
+        // Обработчик клика по кнопке "На главную" на третьей странице
+        toMainBtn.addEventListener('click', function() {
+            thirdPage.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
 
-            aiPrompt.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    generateArt();
-                }
-            });
+        // Обработчик клика по кнопке "На главную" на четвертой странице
+        toMainFromFourthBtn.addEventListener('click', function() {
+            fourthPage.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
 
-            function generateArt() {
-                const prompt = aiPrompt.value.trim();
-                if (!prompt) {
-                    showSecretMessage("Введите описание для генерации!");
-                    return;
-                }
+        // Обработчик клика по кнопке "На главную" на пятой странице
+        toMainFromFifthBtn.addEventListener('click', function() {
+            fifthPage.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
 
-                aiLoading.style.display = 'block';
-                aiCanvas.style.display = 'none';
-                aiDownload.style.display = 'none';
-
-                // Имитация работы AI (в реальном проекте здесь был бы вызов API)
-                setTimeout(() => {
-                    createAIArtwork(prompt);
-                    aiLoading.style.display = 'none';
-                    aiCanvas.style.display = 'block';
-                    aiDownload.style.display = 'inline-block';
-                    
-                    unlockAchievement("Цифровой художник: Создано первое AI-искусство!");
-                    showSecretMessage("Шедевр создан! 🎨");
-                }, 2000);
+        // Обработчик отправки пароля
+        submitPassword.addEventListener('click', function() {
+            if (passwordInput.value === '1080') {
+                passwordModal.classList.remove('active');
+                fourthPage.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                passwordInput.value = '';
+                passwordError.textContent = '';
+            } else {
+                passwordError.textContent = 'Неверный пароль! Попробуйте снова.';
+                passwordInput.value = '';
+                passwordInput.focus();
             }
+        });
 
-            function createAIArtwork(prompt) {
-                ctx.clearRect(0, 0, aiCanvas.width, aiCanvas.height);
-                
-                // Создаем уникальное изображение на основе prompt
-                const colors = [
-                    '#ff0000', '#00ff00', '#0000ff', '#ffff00', 
-                    '#ff00ff', '#00ffff', '#ff9900', '#9400d3'
-                ];
-                
-                // Генерация фона
-                const gradient = ctx.createLinearGradient(0, 0, aiCanvas.width, aiCanvas.height);
-                gradient.addColorStop(0, colors[Math.floor(Math.random() * colors.length)]);
-                gradient.addColorStop(1, colors[Math.floor(Math.random() * colors.length)]);
-                
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, aiCanvas.width, aiCanvas.height);
-                
-                // Генерация абстрактных форм на основе текста
-                const text = prompt.toLowerCase();
-                let shapesCount = text.length % 20 + 5;
-                
-                for (let i = 0; i < shapesCount; i++) {
-                    ctx.beginPath();
+        // Обработчик отмены ввода пароля
+        cancelPassword.addEventListener('click', function() {
+            passwordModal.classList.remove('active');
+            passwordInput.value = '';
+            passwordError.textContent = '';
+        });
+
+        // Обработчик нажатия Enter в поле пароля
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitPassword.click();
+            }
+        });
+
+        // Закрытие страниц при клике вне контента
+        const pages = [secondPage, thirdPage, fourthPage, fifthPage];
+        pages.forEach(page => {
+            page.addEventListener('click', function(e) {
+                if (e.target === page) {
+                    page.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Управление звуком
+        soundBtn.addEventListener('click', function() {
+            if (isMuted) {
+                // Включаем звук
+                backgroundMusic.play().catch(e => {
+                    console.log("Автовоспроизведение заблокировано. Пользователь должен взаимодействовать со страницей сначала.");
+                });
+                soundBtn.classList.remove('muted');
+            } else {
+                // Выключаем звук
+                backgroundMusic.pause();
+                soundBtn.classList.add('muted');
+            }
+            isMuted = !isMuted;
+        });
+
+        // Попытка автоматического воспроизведения при загрузке страницы
+        window.addEventListener('load', function() {
+            // Сначала ставим на паузу, затем пытаемся воспроизвести
+            backgroundMusic.pause();
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Автовоспроизведение было запрещено
+                    soundBtn.classList.add('muted');
+                    isMuted = true;
+                    console.log("Автовоспроизведение заблокировано. Пользователь должен взаимодействовать со страницей сначала.");
+                });
+            }
+        });
+
+        // НОВЫЕ ФУНКЦИОНАЛЬНЫЕ ЭЛЕМЕНТЫ
+        
+        // Активация Konami Code
+        function initKonamiCode() {
+            const konamiCode = [
+                'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+                'KeyB', 'KeyA'
+            ];
+            let konamiIndex = 0;
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.code === konamiCode[konamiIndex]) {
+                    konamiIndex++;
                     
-                    if (text.includes('круг') || text.includes('circle')) {
-                        // Круги
-                        ctx.arc(
-                            Math.random() * aiCanvas.width,
-                            Math.random() * aiCanvas.height,
-                            Math.random() * 50 + 10,
-                            0,
-                            Math.PI * 2
-                        );
-                    } else if (text.includes('треуголь') || text.includes('triangle')) {
-                        // Треугольники
-                        const x = Math.random() * aiCanvas.width;
-                        const y = Math.random() * aiCanvas.height;
-                        const size = Math.random() * 40 + 20;
+                    if (konamiIndex === konamiCode.length) {
+                        // Код введен правильно
+                        document.getElementById('konami-alert').style.display = 'block';
+                        konamiIndex = 0;
                         
-                        ctx.moveTo(x, y - size);
-                        ctx.lineTo(x - size, y + size);
-                        ctx.lineTo(x + size, y + size);
-                        ctx.closePath();
-                    } else {
-                        // Случайные формы
-                        const sides = Math.floor(Math.random() * 6) + 3;
-                        const radius = Math.random() * 40 + 20;
-                        const x = Math.random() * aiCanvas.width;
-                        const y = Math.random() * aiCanvas.height;
-                        
-                        ctx.moveTo(x + radius * Math.cos(0), y + radius * Math.sin(0));
-                        
-                        for (let j = 1; j <= sides; j++) {
-                            ctx.lineTo(
-                                x + radius * Math.cos(j * 2 * Math.PI / sides),
-                                y + radius * Math.sin(j * 2 * Math.PI / sides)
-                            );
-                        }
-                        
-                        ctx.closePath();
+                        // Запускаем сканер
+                        startScanner();
+                        showSecretMessage("Konami Code активирован! Ты настоящий геймер! 🎮");
+                        activateTicker("🎉 KONAMI CODE АКТИВИРОВАН! ВЫ ПОЛУЧИЛИ СУПЕРСИЛЫ! 🎉");
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
+            
+            // Закрытие алерта
+            document.getElementById('close-konami').addEventListener('click', () => {
+                document.getElementById('konami-alert').style.display = 'none';
+            });
+        }
+        
+        // Функция экстренного выхода
+        function initEmergencyExit() {
+            const emergencyExit = document.getElementById('emergency-exit');
+            
+            emergencyExit.addEventListener('click', () => {
+                // Закрываем все открытые страницы
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                passwordModal.classList.remove('active');
+                document.getElementById('konami-alert').style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                // Эффект "побега"
+                emergencyExit.style.background = '#ff0000';
+                emergencyExit.style.color = '#fff';
+                emergencyExit.textContent = '✓';
+                
+                setTimeout(() => {
+                    emergencyExit.style.background = 'rgba(255, 0, 0, 0.2)';
+                    emergencyExit.style.color = '#ff0000';
+                    emergencyExit.textContent = '!';
+                }, 1000);
+            });
+        }
+        
+        // Эффект сканера (как в фильмах)
+        function startScanner() {
+            const scanner = document.getElementById('scanner');
+            scanner.style.display = 'block';
+            
+            setTimeout(() => {
+                scanner.style.display = 'none';
+            }, 4000);
+        }
+        
+        // Режим радуги
+        function initRainbowMode() {
+            const rainbowBtn = document.getElementById('rainbow-mode');
+            let rainbowActive = false;
+            
+            rainbowBtn.addEventListener('click', () => {
+                rainbowActive = !rainbowActive;
+                
+                if (rainbowActive) {
+                    document.body.style.background = 'linear-gradient(45deg, #ff0000, #ff9900, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff)';
+                    document.body.style.backgroundSize = '400% 400%';
+                    document.body.style.animation = 'rainbowBG 5s linear infinite';
+                    startCountdown(30); // 30 секунд радуги
+                    showSecretMessage("Режим радуги активирован! 🌈");
+                } else {
+                    document.body.style.background = '#000';
+                    document.body.style.animation = 'none';
+                    document.getElementById('countdown').style.display = 'none';
+                }
+            });
+        }
+        
+        // Matrix Rain эффект
+        function initMatrixRain() {
+            const matrixBtn = document.getElementById('matrix-btn');
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            let matrixActive = false;
+            let matrixAnimation;
+            
+            // Устанавливаем размер canvas
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Символы для Matrix эффекта
+            const matrixChars = "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = [];
+            
+            // Инициализируем капли
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+            
+            // Функция отрисовки Matrix
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.fillStyle = '#0F0';
+                ctx.font = `${fontSize}px monospace`;
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
                     }
                     
-                    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-                    ctx.globalAlpha = Math.random() * 0.5 + 0.3;
-                    ctx.fill();
-                    ctx.globalAlpha = 1;
+                    drops[i]++;
+                }
+            }
+            
+            matrixBtn.addEventListener('click', () => {
+                matrixActive = !matrixActive;
+                
+                if (matrixActive) {
+                    canvas.style.display = 'block';
+                    matrixAnimation = setInterval(drawMatrix, 35);
+                    showSecretMessage("Добро пожаловать в Матрицу... 🔋");
+                } else {
+                    canvas.style.display = 'none';
+                    clearInterval(matrixAnimation);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            });
+        }
+        
+        // Режим хаоса
+        function initChaosMode() {
+            const chaosBtn = document.getElementById('chaos-btn');
+            let chaosActive = false;
+            let chaosInterval;
+            
+            chaosBtn.addEventListener('click', () => {
+                chaosActive = !chaosActive;
+                
+                if (chaosActive) {
+                    document.body.classList.add('shake-effect');
+                    showSecretMessage("Режим хаоса активирован! 💥");
+                    
+                    chaosInterval = setInterval(() => {
+                        // Случайные изменения на странице
+                        document.body.style.transform = `rotate(${Math.random() * 2 - 1}deg)`;
+                        document.body.style.marginLeft = `${Math.random() * 10 - 5}px`;
+                    }, 100);
+                    
+                    // Автоматическое отключение через 10 секунд
+                    setTimeout(() => {
+                        chaosActive = false;
+                        clearInterval(chaosInterval);
+                        document.body.classList.remove('shake-effect');
+                        document.body.style.transform = '';
+                        document.body.style.marginLeft = '';
+                    }, 10000);
+                } else {
+                    clearInterval(chaosInterval);
+                    document.body.classList.remove('shake-effect');
+                    document.body.style.transform = '';
+                    document.body.style.marginLeft = '';
+                }
+            });
+        }
+        
+        // Неоновый режим
+        function initNeonMode() {
+            const neonBtn = document.getElementById('neon-btn');
+            let neonActive = false;
+            
+            neonBtn.addEventListener('click', () => {
+                neonActive = !neonActive;
+                
+                if (neonActive) {
+                    document.querySelectorAll('h1, h2, .btn, .logo').forEach(element => {
+                        element.style.textShadow = '0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff';
+                    });
+                    showSecretMessage("Неоновый режим включен! 🌟");
+                } else {
+                    document.querySelectorAll('h1, h2, .btn, .logo').forEach(element => {
+                        element.style.textShadow = '';
+                    });
+                }
+            });
+        }
+        
+        // 8-bit ретро режим
+        function initRetroMode() {
+            const retroBtn = document.getElementById('retro-btn');
+            let retroActive = false;
+            
+            retroBtn.addEventListener('click', () => {
+                retroActive = !retroActive;
+                
+                if (retroActive) {
+                    document.body.classList.add('pixelate');
+                    document.body.style.imageRendering = 'pixelated';
+                    showSecretMessage("Ретро 8-bit режим активирован! 🎮");
+                } else {
+                    document.body.classList.remove('pixelate');
+                    document.body.style.imageRendering = '';
+                }
+            });
+        }
+        
+        // Зеркальный режим
+        function initMirrorMode() {
+            const mirrorBtn = document.getElementById('mirror-btn');
+            let mirrorActive = false;
+            
+            mirrorBtn.addEventListener('click', () => {
+                mirrorActive = !mirrorActive;
+                
+                if (mirrorActive) {
+                    document.body.style.transform = 'scaleX(-1)';
+                    showSecretMessage("Зеркальный режим активирован! 🪞");
+                } else {
+                    document.body.style.transform = '';
+                }
+            });
+        }
+        
+        // Инверсный режим
+        function initInvertMode() {
+            const invertBtn = document.getElementById('invert-btn');
+            let invertActive = false;
+            
+            invertBtn.addEventListener('click', () => {
+                invertActive = !invertActive;
+                
+                if (invertActive) {
+                    document.body.style.filter = 'invert(1)';
+                    showSecretMessage("Инверсный режим активирован! 🔄");
+                } else {
+                    document.body.style.filter = '';
+                }
+            });
+        }
+        
+        // Диско режим
+        function initDiscoMode() {
+            const discoBtn = document.getElementById('disco-btn');
+            let discoActive = false;
+            let discoInterval;
+            
+            discoBtn.addEventListener('click', () => {
+                discoActive = !discoActive;
+                
+                if (discoActive) {
+                    showSecretMessage("Диско режим активирован! 💃");
+                    
+                    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                    let colorIndex = 0;
+                    
+                    discoInterval = setInterval(() => {
+                        document.body.style.background = colors[colorIndex];
+                        colorIndex = (colorIndex + 1) % colors.length;
+                    }, 200);
+                    
+                    // Автоматическое отключение через 15 секунд
+                    setTimeout(() => {
+                        discoActive = false;
+                        clearInterval(discoInterval);
+                        document.body.style.background = '#000';
+                    }, 15000);
+                } else {
+                    clearInterval(discoInterval);
+                    document.body.style.background = '#000';
+                }
+            });
+        }
+        
+        // Космический режим
+        function initSpaceMode() {
+            const spaceBtn = document.getElementById('space-btn');
+            let spaceActive = false;
+            
+            spaceBtn.addEventListener('click', () => {
+                spaceActive = !spaceActive;
+                
+                if (spaceActive) {
+                    document.body.style.background = 'radial-gradient(circle, #000000 0%, #1a1a2e 50%, #16213e 100%)';
+                    document.body.style.backgroundSize = '400% 400%';
+                    document.body.style.animation = 'spaceBG 10s ease infinite';
+                    showSecretMessage("Космический режим активирован! 🚀");
+                    
+                    // Создаем звезды
+                    createStars();
+                } else {
+                    document.body.style.background = '#000';
+                    document.body.style.animation = 'none';
+                    document.querySelectorAll('.star').forEach(star => star.remove());
+                }
+            });
+            
+            // Создание звезд для космического режима
+            function createStars() {
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    star.style.position = 'fixed';
+                    star.style.width = Math.random() * 3 + 'px';
+                    star.style.height = star.style.width;
+                    star.style.background = '#fff';
+                    star.style.borderRadius = '50%';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.opacity = Math.random();
+                    star.style.animation = `twinkle ${Math.random() * 3 + 1}s infinite alternate`;
+                    document.body.appendChild(star);
                 }
                 
-                // Добавляем текст prompt в изображение
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '16px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText(prompt, aiCanvas.width / 2, aiCanvas.height - 20);
-                
-                // Создаем ссылку для скачивания
-                aiDownload.href = aiCanvas.toDataURL('image/png');
+                // Добавляем анимацию мерцания
+                const starStyle = document.createElement('style');
+                starStyle.textContent = `
+                    @keyframes twinkle {
+                        0% { opacity: 0.3; }
+                        100% { opacity: 1; }
+                    }
+                    @keyframes spaceBG {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+                `;
+                document.head.appendChild(starStyle);
             }
         }
-
-        // Инициализация AI художника
+        
+        // Активация бегущей строки
+        function activateTicker(message) {
+            const ticker = document.getElementById('ticker');
+            const tickerContent = document.getElementById('ticker-content');
+            
+            tickerContent.textContent = message;
+            ticker.style.display = 'block';
+            
+            setTimeout(() => {
+                ticker.style.display = 'none';
+            }, 10000);
+        }
+        
+        // Таймер обратного отсчета
+        function startCountdown(seconds) {
+            const countdown = document.getElementById('countdown');
+            countdown.style.display = 'block';
+            
+            let timeLeft = seconds;
+            
+            const timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const secs = timeLeft % 60;
+                countdown.textContent = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdown.style.display = 'none';
+                    document.body.style.background = '#000';
+                    document.body.style.animation = 'none';
+                }
+                
+                timeLeft--;
+            }, 1000);
+        }
+        
+        // Показать секретное сообщение
+        function showSecretMessage(message) {
+            const messageElement = document.getElementById('secret-message');
+            messageElement.textContent = message;
+            messageElement.style.opacity = '1';
+            
+            setTimeout(() => {
+                messageElement.style.opacity = '0';
+            }, 3000);
+        }
+        
+        // Создаем анимацию для радужного фона
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbowBG {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Инициализация всех новых функций
         window.addEventListener('load', function() {
-            // ... остальная инициализация
-            initAIArtist();
+            initKonamiCode();
+            initEmergencyExit();
+            initRainbowMode();
+            initMatrixRain();
+            initChaosMode();
+            initNeonMode();
+            initRetroMode();
+            initMirrorMode();
+            initInvertMode();
+            initDiscoMode();
+            initSpaceMode();
+            
+            // Автозапуск бегущей строки при загрузке
+            setTimeout(() => {
+                activateTicker("🌟 ДОБРО ПОЖАЛОВАТЬ! ИССЛЕДУЙТЕ ВСЕ СЕКРЕТНЫЕ ФУНКЦИИ САЙТА! 🌟");
+            }, 2000);
         });
     </script>
 </body>
 </html>
+
