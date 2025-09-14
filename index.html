@@ -18,6 +18,7 @@
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
         .container {
@@ -360,6 +361,53 @@
             fill: #666;
         }
 
+        /* Секретная кнопка */
+        .secret-image-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 900;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .secret-image-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+        }
+
+        .secret-image-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Пятая страница */
+        .hidden-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hidden-content h2 {
+            color: #ff9900;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .hidden-content p {
+            color: #fff;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -392,6 +440,11 @@
             .page p {
                 font-size: 1.2rem;
             }
+
+            .secret-image-btn {
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
@@ -417,6 +470,11 @@
         </section>
     </div>
 
+    <!-- Секретная кнопка с изображением -->
+    <button class="secret-image-btn" id="secret-image-btn" style="display: none;">
+        <img src="image.jpg" alt="Секретная кнопка" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZmZmZiI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMThjLTQuNDIgMC04LTMuNTgtOC04czMuNTgtOCA4LTggOCAzLjU4IDggOC0zLjU4IDgtOCA4eiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjUiLz48L3N2Zz4='">
+    </button>
+
     <!-- Кнопка управления звуком -->
     <div class="sound-btn" id="sound-btn">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -436,8 +494,8 @@
     <!-- Третья страница -->
     <div class="page" id="third-page">
         <div class="page-content">
-            <h2>ура</h2>
-            <p>поздравляю ты нашол деревню скртыого дизайнера</p>
+            <h2>Третья страница</h2>
+            <p>Здесь будет ваш текст, который вы сможете изменить позже прямо в коде.</p>
             <button class="back-btn" id="to-main-btn">На главную</button>
         </div>
     </div>
@@ -445,9 +503,21 @@
     <!-- Четвертая страница -->
     <div class="page" id="fourth-page">
         <div class="page-content">
-            <h2>пшло отсюда</h2>
-            <p>сьебал</p>
+            <h2>Секретная страница</h2>
+            <p>Поздравляю! Вы ввели правильный пароль и получили доступ к секретной странице. Здесь вы можете разместить любой контент, который захотите.</p>
             <button class="back-btn" id="to-main-from-fourth-btn">На главную</button>
+        </div>
+    </div>
+
+    <!-- Пятая страница (для секретной кнопки) -->
+    <div class="page" id="fifth-page">
+        <div class="page-content">
+            <div class="hidden-content">
+                <h2>Секрет обнаружен!</h2>
+                <p>Вы нашли скрытую кнопку! Это пятая страница с дополнительным контентом.</p>
+                <p>Здесь вы можете разместить любую информацию, которую хотите скрыть от большинства пользователей.</p>
+                <button class="back-btn" id="to-main-from-fifth-btn">На главную</button>
+            </div>
         </div>
     </div>
 
@@ -474,12 +544,15 @@
         // Получаем элементы DOM
         const nextBtn = document.getElementById('next-btn');
         const secretBtn = document.getElementById('secret-btn');
+        const secretImageBtn = document.getElementById('secret-image-btn');
         const secondPage = document.getElementById('second-page');
         const thirdPage = document.getElementById('third-page');
         const fourthPage = document.getElementById('fourth-page');
+        const fifthPage = document.getElementById('fifth-page');
         const toThirdPageBtn = document.getElementById('to-third-page-btn');
         const toMainBtn = document.getElementById('to-main-btn');
         const toMainFromFourthBtn = document.getElementById('to-main-from-fourth-btn');
+        const toMainFromFifthBtn = document.getElementById('to-main-from-fifth-btn');
         const passwordModal = document.getElementById('password-modal');
         const passwordInput = document.getElementById('password-input');
         const passwordError = document.getElementById('password-error');
@@ -490,6 +563,27 @@
         
         // Флаг состояния звука
         let isMuted = false;
+
+        // Функция для случайного позиционирования секретной кнопки
+        function positionSecretButton() {
+            const button = secretImageBtn;
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            button.style.left = `${randomX}px`;
+            button.style.top = `${randomY}px`;
+            button.style.display = 'block';
+        }
+
+        // Позиционируем кнопку при загрузке и при изменении размера окна
+        window.addEventListener('load', positionSecretButton);
+        window.addEventListener('resize', positionSecretButton);
+
+        // Перемещаем кнопку каждые 30 секунд
+        setInterval(positionSecretButton, 30000);
 
         // Обработчик клика по кнопке "Дальше"
         nextBtn.addEventListener('click', function(e) {
@@ -503,6 +597,12 @@
             e.preventDefault();
             passwordModal.classList.add('active');
             passwordInput.focus();
+        });
+
+        // Обработчик клика по секретной кнопке с изображением
+        secretImageBtn.addEventListener('click', function() {
+            fifthPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
         });
 
         // Обработчик клика по кнопке "Вернуться назад" на второй странице
@@ -520,6 +620,12 @@
         // Обработчик клика по кнопке "На главную" на четвертой странице
         toMainFromFourthBtn.addEventListener('click', function() {
             fourthPage.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Обработчик клика по кнопке "На главную" на пятой странице
+        toMainFromFifthBtn.addEventListener('click', function() {
+            fifthPage.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
 
@@ -553,25 +659,14 @@
         });
 
         // Закрытие страниц при клике вне контента
-        secondPage.addEventListener('click', function(e) {
-            if (e.target === secondPage) {
-                secondPage.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        thirdPage.addEventListener('click', function(e) {
-            if (e.target === thirdPage) {
-                thirdPage.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        fourthPage.addEventListener('click', function(e) {
-            if (e.target === fourthPage) {
-                fourthPage.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
+        const pages = [secondPage, thirdPage, fourthPage, fifthPage];
+        pages.forEach(page => {
+            page.addEventListener('click', function(e) {
+                if (e.target === page) {
+                    page.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
 
         // Управление звуком
@@ -608,5 +703,3 @@
     </script>
 </body>
 </html>
-
-
